@@ -1,4 +1,9 @@
 export default {
+    widgets: {
+        'Mutation.adminMutation.createSource.name': {
+            widget: 'date',
+        },
+    },
     forms: {
         Mutation: {
             node: {
