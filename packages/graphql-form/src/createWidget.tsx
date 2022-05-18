@@ -1,5 +1,4 @@
 import { PassedFormProps, CastToWidgetSettingsPassedForm } from '@/models';
-import React from 'react';
 
 export function createWidget<Props>({
     name,

@@ -5,11 +5,16 @@ export type FieldComponent = React.FC<PassedFormProps>;
 
 export type FormLabelProps = React.FC<PassedFormProps & { open?: boolean; setOpen: (b: boolean) => void }>;
 
+export type WidgetSavedData = {
+    widget: string;
+    [x: string]: any;
+};
+
 export type SavedWidgets = {
-    [selector: string]: {
-        widget: string;
-        [x: string]: any;
-    };
+    [selector: string]: WidgetSavedData | undefined;
+};
+export type SavedForms = {
+    [selector: string]: FormObject;
 };
 
 export type PassedFormProps<WidgetData = any> = {
@@ -17,7 +22,7 @@ export type PassedFormProps<WidgetData = any> = {
     nodes: ParserField[];
     formObject: FormObject;
     onChange: (formObject: FormObject) => void;
-    changeWidget: (widgetData: Record<string, any> | undefined, path: string) => void;
+    changeWidget: (widgetData: WidgetSavedData | undefined, path: string) => void;
     required?: boolean;
     runQuery: (q: string) => Promise<any>;
     widgetComponents: WidgetType[];
@@ -36,22 +41,25 @@ export type PassedFormProps<WidgetData = any> = {
         FormField: FieldComponent;
     };
 };
+export type FormFile = {
+    widgets?: SavedWidgets;
+    forms?: SavedForms;
+};
 
-export type MainRendererProps = Omit<
+export type FormBuilderProps = Omit<
     PassedFormProps,
-    'formObject' | 'onChange' | 'f' | 'currentPath' | 'changeWidget'
+    'formObject' | 'onChange' | 'f' | 'currentPath' | 'changeWidget' | 'widgets'
 > & {
-    formFields: Record<string, FormObject>;
-    widgetsOnChange: (key: string, value?: Omit<FormObject, 'node' | 'value'>) => void;
-    onChange: (o: Record<string, FormObject>) => void;
+    formFile: FormFile;
+    onChange: (o: FormFile) => void;
 };
 
 export type FormDisplayerProps = Omit<
     PassedFormProps,
-    'formObject' | 'onChange' | 'f' | 'currentPath' | 'changeWidget'
+    'formObject' | 'onChange' | 'f' | 'currentPath' | 'changeWidget' | 'widgets'
 > & {
-    formFields: Record<string, FormObject>;
-    onChange: (o: Record<string, FormObject>) => void;
+    formFile: FormFile;
+    onChange: (o: FormFile) => void;
 };
 
 export type FormLibraryProps = Omit<FormDisplayerProps, 'required' | 'components'>;
@@ -83,11 +91,4 @@ export type FormValue =
 export type FormObject = {
     value?: FormValue;
     node: ParserField;
-};
-
-export type FormDataType = Record<string, FormObject | Record<string, FormObject | undefined>>;
-
-export type FormFile = {
-    forms: Record<string, FormObject>;
-    widgets: Record<string, Omit<FormObject, 'node' | 'value'>>;
 };

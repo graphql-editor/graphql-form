@@ -12,7 +12,7 @@ const HomePage = () => {
     return (
         <Layout pageTitle="HomePage">
             <MuiForm
-                formFields={myForm as any}
+                formFile={myForm as any}
                 nodes={parsedSchema.nodes}
                 onChange={(e) => {
                     setMyForm(e as any);
