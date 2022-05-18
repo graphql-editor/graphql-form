@@ -20,7 +20,7 @@ export const FormDisplayer: React.FC<FormDisplayerProps> = ({ formFile, onChange
                         changeWidget={() => {
                             return;
                         }}
-                        currentPath={''}
+                        currentPath={key}
                         formObject={formFields[key]}
                         onChange={(changedForm: FormObject) => {
                             onChange({

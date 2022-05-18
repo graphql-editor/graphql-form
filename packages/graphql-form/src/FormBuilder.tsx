@@ -26,7 +26,7 @@ export const FormBuilder: React.FC<FormBuilderProps> = ({ formFile, onChange, ..
                             });
                         }}
                         widgets={widgets}
-                        currentPath={''}
+                        currentPath={key}
                         formObject={formFields[key]}
                         onChange={(changedForm: FormObject) => {
                             onChange({
