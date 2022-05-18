@@ -1,0 +1,14 @@
+{
+    "files": [],
+    "references": [
+        {
+            "path": "./packages/graphql-form"
+        },
+        {
+            "path": "./packages/graphql-form-chakra"
+        },
+        {
+            "path": "./packages/sandbox"
+        }
+    ]
+}
