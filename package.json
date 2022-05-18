@@ -1,5 +1,8 @@
 {
     "name": "graphql-form-workspace",
+    "scripts": {
+        "push-next-patch": "npm version patch -ws && git add . && git commit -m 'new release' && git push origin main"
+    },
     "workspaces": [
         "./packages/graphql-form",
         "./packages/graphql-form-mui",
