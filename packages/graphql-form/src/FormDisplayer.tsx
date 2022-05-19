@@ -1,3 +1,4 @@
+import { formToGql } from '@/FormToCode';
 import { FormDisplayerProps, FormObject } from '@/models';
 import { Renderer } from '@/renderer';
 import { TypeSystemDefinition } from 'graphql-js-tree';
@@ -16,6 +17,7 @@ export const FormDisplayer: React.FC<FormDisplayerProps> = ({ formFile, onChange
                 return (
                     <Renderer
                         {...props}
+                        key={key}
                         widgets={widgets}
                         changeWidget={() => {
                             return;
@@ -23,13 +25,15 @@ export const FormDisplayer: React.FC<FormDisplayerProps> = ({ formFile, onChange
                         currentPath={key}
                         formObject={formFields[key]}
                         onChange={(changedForm: FormObject) => {
-                            onChange({
+                            const updatedFile = {
                                 ...formFile,
                                 forms: {
                                     ...forms,
                                     [key]: changedForm,
                                 },
-                            });
+                            };
+                            const query = formToGql({ fields: updatedFile.forms, nodes: props.nodes });
+                            onChange(updatedFile, query);
                         }}
                         f={formFields[key].node}
                     />

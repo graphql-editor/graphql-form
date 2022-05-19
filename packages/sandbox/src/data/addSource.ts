@@ -1,4 +1,6 @@
-export default {
+import { FormFile } from 'graphql-form';
+
+const file = {
     widgets: {
         'Mutation.adminMutation.createSource.name': {
             widget: 'date',
@@ -519,4 +521,5 @@ export default {
             },
         },
     },
-};
+} as FormFile;
+export default file;

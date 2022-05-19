@@ -2,7 +2,7 @@ import { Button, IconButton, Stack } from '@mui/material';
 import { FormObject, FormValue, PassedFormProps, Renderer } from 'graphql-form';
 import { Options, ParserField } from 'graphql-js-tree';
 import React from 'react';
-import { ArrowDownward, ArrowUpward, Close, PlusOne } from '@mui/icons-material';
+import { Add, ArrowDownward, ArrowUpward, Close } from '@mui/icons-material';
 
 const ArrayField: React.FC<
     PassedFormProps & {
@@ -101,7 +101,7 @@ const ArrayField: React.FC<
                         value: formValuePointer,
                     });
                 }}
-                endIcon={<PlusOne />}
+                endIcon={<Add />}
             >
                 {`Add ${f.name}`}
             </Button>

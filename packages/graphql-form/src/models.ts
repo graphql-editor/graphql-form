@@ -51,7 +51,7 @@ export type FormBuilderProps = Omit<
     'formObject' | 'onChange' | 'f' | 'currentPath' | 'changeWidget' | 'widgets'
 > & {
     formFile: FormFile;
-    onChange: (o: FormFile) => void;
+    onChange: (o: FormFile, query: string) => void;
 };
 
 export type FormDisplayerProps = Omit<
@@ -59,7 +59,7 @@ export type FormDisplayerProps = Omit<
     'formObject' | 'onChange' | 'f' | 'currentPath' | 'changeWidget' | 'widgets'
 > & {
     formFile: FormFile;
-    onChange: (o: FormFile) => void;
+    onChange: (o: FormFile, query: string) => void;
 };
 
 export type FormLibraryProps = Omit<FormDisplayerProps, 'required' | 'components'>;

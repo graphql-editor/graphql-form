@@ -1,3 +1,4 @@
+import { formToGql } from '@/FormToCode';
 import { FormBuilderProps, FormObject } from '@/models';
 import { Renderer } from '@/renderer';
 import { TypeSystemDefinition } from 'graphql-js-tree';
@@ -16,26 +17,33 @@ export const FormBuilder: React.FC<FormBuilderProps> = ({ formFile, onChange, ..
                 return (
                     <Renderer
                         {...props}
+                        key={key}
                         changeWidget={(widgetData, path) => {
-                            onChange({
-                                ...formFile,
-                                widgets: {
-                                    ...widgets,
-                                    [path]: widgetData,
+                            const query = formToGql({ fields: forms, nodes: props.nodes });
+                            onChange(
+                                {
+                                    ...formFile,
+                                    widgets: {
+                                        ...widgets,
+                                        [path]: widgetData,
+                                    },
                                 },
-                            });
+                                query,
+                            );
                         }}
                         widgets={widgets}
                         currentPath={key}
                         formObject={formFields[key]}
                         onChange={(changedForm: FormObject) => {
-                            onChange({
+                            const updatedFile = {
                                 ...formFile,
                                 forms: {
                                     ...forms,
                                     [key]: changedForm,
                                 },
-                            });
+                            };
+                            const query = formToGql({ fields: updatedFile.forms, nodes: props.nodes });
+                            onChange(updatedFile, query);
                         }}
                         f={formFields[key].node}
                     />

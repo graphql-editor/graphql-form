@@ -7,7 +7,7 @@ const ObjectField: React.FC<PassedFormProps> = (props) => {
     formObject.value ||= {};
     const fV = formObject.value as { [x: string]: FormObject };
     return (
-        <Stack pl={4}>
+        <Stack pl={2} spacing={2}>
             {f.args
                 ?.sort((a, b) => {
                     return b.name > a.name ? -1 : 1;
