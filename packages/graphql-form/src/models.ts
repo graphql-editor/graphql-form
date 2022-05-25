@@ -17,7 +17,9 @@ export type SavedForms = {
     [selector: string]: FormObject;
 };
 
-export type PassedFormProps<WidgetData = unknown> = {
+export type ReturnedDictType = Record<string, unknown> | undefined;
+
+export type PassedFormProps<WidgetData = ReturnedDictType> = {
     f: ParserField;
     nodes: ParserField[];
     formObject: FormObject;
@@ -64,15 +66,15 @@ export type FormDisplayerProps = Omit<
 
 export type FormLibraryProps = Omit<FormDisplayerProps, 'required' | 'components'>;
 
-export type CastToWidgetSettingsPassedForm<WidgetData> = PassedFormProps<Partial<WidgetData>> & {
+export type CastToWidgetSettingsPassedForm<WidgetData = ReturnedDictType> = PassedFormProps<Partial<WidgetData>> & {
     widgetSettingsChange: (data: WidgetData) => void;
 };
 
 export type WidgetType = {
     Component: React.FC<PassedFormProps>;
-    Settings: React.FC<CastToWidgetSettingsPassedForm<unknown>> | undefined;
+    Settings: React.FC<CastToWidgetSettingsPassedForm> | undefined;
     requirements: (props: PassedFormProps) => boolean;
-    props?: Record<string, unknown>;
+    props?: ReturnedDictType;
     name: string;
 };
 
