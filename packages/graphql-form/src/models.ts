@@ -26,7 +26,7 @@ export type PassedFormProps<WidgetData = ReturnedDictType> = {
     onChange: (formObject: FormObject) => void;
     changeWidget: (widgetData: WidgetSavedData | undefined, path: string) => void;
     required?: boolean;
-    runQuery: (q: string) => Promise<unknown>;
+    runQuery: (q: string) => Promise<ReturnedDictType>;
     widgetComponents: WidgetType[];
     currentPath: string;
     widgets?: SavedWidgets;
