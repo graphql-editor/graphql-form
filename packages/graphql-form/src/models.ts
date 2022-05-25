@@ -17,7 +17,8 @@ export type SavedForms = {
     [selector: string]: FormObject;
 };
 
-export type ReturnedDictType = Record<string, unknown> | undefined;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type ReturnedDictType = any;
 
 export type PassedFormProps<WidgetData = ReturnedDictType> = {
     f: ParserField;
@@ -73,6 +74,7 @@ export type CastToWidgetSettingsPassedForm<WidgetData = ReturnedDictType> = Pass
 export type WidgetType = {
     Component: React.FC<PassedFormProps>;
     Settings: React.FC<CastToWidgetSettingsPassedForm> | undefined;
+    Description?: React.FC;
     requirements: (props: PassedFormProps) => boolean;
     props?: ReturnedDictType;
     name: string;
