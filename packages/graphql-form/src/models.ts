@@ -7,7 +7,7 @@ export type FormLabelProps = React.FC<PassedFormProps & { open?: boolean; setOpe
 
 export type WidgetSavedData = {
     widget: string;
-    [x: string]: any;
+    [x: string]: unknown;
 };
 
 export type SavedWidgets = {
@@ -17,14 +17,14 @@ export type SavedForms = {
     [selector: string]: FormObject;
 };
 
-export type PassedFormProps<WidgetData = any> = {
+export type PassedFormProps<WidgetData = unknown> = {
     f: ParserField;
     nodes: ParserField[];
     formObject: FormObject;
     onChange: (formObject: FormObject) => void;
     changeWidget: (widgetData: WidgetSavedData | undefined, path: string) => void;
     required?: boolean;
-    runQuery: (q: string) => Promise<any>;
+    runQuery: (q: string) => Promise<unknown>;
     widgetComponents: WidgetType[];
     currentPath: string;
     widgets?: SavedWidgets;
@@ -65,14 +65,14 @@ export type FormDisplayerProps = Omit<
 export type FormLibraryProps = Omit<FormDisplayerProps, 'required' | 'components'>;
 
 export type CastToWidgetSettingsPassedForm<WidgetData> = PassedFormProps<Partial<WidgetData>> & {
-    close: () => void;
+    widgetSettingsChange: (data: WidgetData) => void;
 };
 
 export type WidgetType = {
     Component: React.FC<PassedFormProps>;
-    Settings: React.FC<CastToWidgetSettingsPassedForm<any>> | undefined;
+    Settings: React.FC<CastToWidgetSettingsPassedForm<unknown>> | undefined;
     requirements: (props: PassedFormProps) => boolean;
-    props?: Record<string, any>;
+    props?: Record<string, unknown>;
     name: string;
 };
 

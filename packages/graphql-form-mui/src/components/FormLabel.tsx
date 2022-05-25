@@ -1,5 +1,5 @@
 import { IconButton, Stack, Typography } from '@mui/material';
-import { LineAxis, ExpandLess, ExpandMore } from '@mui/icons-material';
+import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import { PassedFormProps } from 'graphql-form';
 import { TypeSystemDefinition, Options, getTypeName, TypeDefinition } from 'graphql-js-tree';
 import React from 'react';
