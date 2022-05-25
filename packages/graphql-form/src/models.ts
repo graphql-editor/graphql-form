@@ -16,9 +16,14 @@ export type SavedWidgets = {
 export type SavedForms = {
     [selector: string]: FormObject;
 };
-
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type ReturnedDictType = any;
+
+export type WidgetVariantType = {
+    name: string;
+    widget: string;
+    data: ReturnedDictType;
+};
 
 export type PassedFormProps<WidgetData = ReturnedDictType> = {
     f: ParserField;
@@ -29,6 +34,7 @@ export type PassedFormProps<WidgetData = ReturnedDictType> = {
     required?: boolean;
     runQuery: (q: string) => Promise<ReturnedDictType>;
     widgetComponents: WidgetType[];
+    widgetVariants?: WidgetVariantType[];
     currentPath: string;
     widgets?: SavedWidgets;
     widgetData?: WidgetData;

@@ -8,6 +8,7 @@ export const Fields: React.FC<PassedFormProps> = (props) => {
         widgetComponents,
         f,
         widgets,
+        widgetVariants,
         components: { ArrayField, ObjectField },
     } = props;
     const seekNode = nodes.find((n) => n.name === getTypeName(f.type.fieldType));
@@ -25,7 +26,23 @@ export const Fields: React.FC<PassedFormProps> = (props) => {
     if (widget) {
         const WidgetComponent = widgetComponents.find((wc) => wc.name === widget.widget)?.Component;
         if (!WidgetComponent) {
-            return <></>;
+            const widgetVariant = widgetVariants?.find((wv) => wv.name === widget.widget);
+            if (!widgetVariant) {
+                return <></>;
+            }
+            const WidgetComponent = widgetComponents.find((wc) => wc.name === widgetVariant.widget)?.Component;
+            if (!WidgetComponent) {
+                return <></>;
+            }
+            return (
+                <WidgetComponent
+                    {...props}
+                    widgetData={{
+                        widget: widgetVariant.widget,
+                        ...widgetVariant.data,
+                    }}
+                />
+            );
         }
         return <WidgetComponent {...props} widgetData={widget} />;
     }
