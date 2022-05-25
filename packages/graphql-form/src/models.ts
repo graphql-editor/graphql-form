@@ -73,7 +73,9 @@ export type FormDisplayerProps = Omit<
 
 export type FormLibraryProps = Omit<FormDisplayerProps, 'required' | 'components'>;
 
-export type CastToWidgetSettingsPassedForm<WidgetData = ReturnedDictType> = PassedFormProps<Partial<WidgetData>> & {
+export type CastToWidgetSettingsPassedForm<WidgetData = ReturnedDictType> = Partial<
+    PassedFormProps<Partial<WidgetData>>
+> & {
     widgetSettingsChange: (data: WidgetData) => void;
 };
 
