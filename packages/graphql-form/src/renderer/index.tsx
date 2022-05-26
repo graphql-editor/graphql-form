@@ -8,6 +8,7 @@ export const Renderer: React.FC<PassedFormProps> = (props) => {
         formObject,
         f,
         nodes,
+        widgets,
         components: { NullField, FormLabel, FormField },
     } = props;
     const { children, ...allProps } = props;
@@ -27,9 +28,10 @@ export const Renderer: React.FC<PassedFormProps> = (props) => {
             />
         );
     }
+    const showLabel = !widgets?.[props.currentPath]?.hideLabel;
     return (
         <FormField {...allProps}>
-            <FormLabel {...allProps} open={open} setOpen={setOpen} children={children} />
+            {showLabel && <FormLabel {...allProps} open={open} setOpen={setOpen} children={children} />}
             {formObject.value === null ? (
                 <NullField {...allProps} />
             ) : (

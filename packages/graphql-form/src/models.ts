@@ -7,6 +7,7 @@ export type FormLabelProps = React.FC<PassedFormProps & { open?: boolean; setOpe
 
 export type WidgetSavedData = {
     widget: string;
+    hideLabel?: boolean;
     [x: string]: unknown;
 };
 
