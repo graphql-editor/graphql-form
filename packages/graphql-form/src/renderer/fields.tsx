@@ -1,14 +1,12 @@
 import { PassedFormProps } from '@/models';
+import { getWidgetFromProps } from '@/outsideUse';
 import { getTypeName, Options, ScalarTypes, TypeDefinition, TypeSystemDefinition } from 'graphql-js-tree';
 import React from 'react';
 
 export const Fields: React.FC<PassedFormProps> = (props) => {
     const {
         nodes,
-        widgetComponents,
         f,
-        widgets,
-        widgetVariants,
         components: { ArrayField, ObjectField },
     } = props;
     const seekNode = nodes.find((n) => n.name === getTypeName(f.type.fieldType));
@@ -22,29 +20,13 @@ export const Fields: React.FC<PassedFormProps> = (props) => {
     if (isInput) {
         return <ObjectField {...props} f={seekNode} />;
     }
-    const widget = widgets?.[props.currentPath];
-    if (widget) {
-        const WidgetComponent = widgetComponents.find((wc) => wc.name === widget.widget)?.Component;
-        if (!WidgetComponent) {
-            const widgetVariant = widgetVariants?.find((wv) => wv.name === widget.widget);
-            if (!widgetVariant) {
-                return <></>;
-            }
-            const WidgetComponent = widgetComponents.find((wc) => wc.name === widgetVariant.widget)?.Component;
-            if (!WidgetComponent) {
-                return <></>;
-            }
-            return (
-                <WidgetComponent
-                    {...props}
-                    widgetData={{
-                        widget: widgetVariant.widget,
-                        ...widgetVariant.data,
-                    }}
-                />
-            );
-        }
-        return <WidgetComponent {...props} widgetData={widget} />;
+    const w = getWidgetFromProps(props);
+    if (w) {
+        const {
+            data,
+            widget: { Component },
+        } = w;
+        return <Component {...props} widgetData={data} />;
     }
     return <ScalarField {...props} />;
 };

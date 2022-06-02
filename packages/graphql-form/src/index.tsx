@@ -4,3 +4,4 @@ export * from '@/FormDisplayer';
 export * from '@/createWidget';
 export * from '@/renderer';
 export * from '@/FormToCode';
+export * from '@/outsideUse';

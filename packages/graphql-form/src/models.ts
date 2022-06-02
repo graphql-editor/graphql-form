@@ -13,6 +13,10 @@ export type WidgetSavedData = {
 export type SavedWidgets = {
     [selector: string]: WidgetSavedData | undefined;
 };
+export type Errors = {
+    [selector: string]: string;
+};
+
 export type SavedForms = {
     [selector: string]: FormObject;
 };
@@ -37,6 +41,7 @@ export type PassedFormProps<WidgetData = ReturnedDictType> = {
     widgetVariants?: WidgetVariantType[];
     currentPath: string;
     widgets?: SavedWidgets;
+    errors?: Errors;
     widgetData?: WidgetData;
     components: {
         ArrayField: FieldComponent;
