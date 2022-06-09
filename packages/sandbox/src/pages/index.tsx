@@ -4,7 +4,7 @@ import { getTypeName, Parser, ScalarTypes, TypeDefinition } from 'graphql-js-tre
 import addSource from '@/src/data/addSource';
 import schema from '@/src/data/schema';
 import { useState } from 'react';
-import { createWidget } from 'graphql-form';
+import { createWidget, validateForm, eraseForm } from 'graphql-form';
 import styled from '@emotion/styled';
 import Head from 'next/head';
 import { Button } from '@mui/material';
@@ -46,6 +46,7 @@ const execute = async (query: string) => {
 const HomePage = () => {
     const [myForm, setMyForm] = useState(addSource);
     const [query, setQuery] = useState('');
+    const [userSubmittedInvalidForm, setUserSubmittedInvalidForm] = useState(false);
     return (
         <>
             <Head>
@@ -60,14 +61,38 @@ const HomePage = () => {
                         formFile={myForm}
                         nodes={parsedSchema.nodes}
                         onChange={(e, q) => {
-                            setMyForm(e);
+                            if (userSubmittedInvalidForm) {
+                                const [form] = validateForm(e, parsedSchema.nodes, {
+                                    REQUIRED: 'This value is required',
+                                    VALUE_IN_ARRAY_REQUIRED: 'Value in array is required',
+                                });
+                                setMyForm(form);
+                            } else {
+                                setMyForm(e);
+                            }
                             setQuery(q);
                         }}
                         runQuery={execute}
                         widgetComponents={[DateWidget]}
                     />
                     <ToTheLeft>
-                        <Button onClick={() => execute(query)} variant="contained">
+                        <Button onClick={() => setMyForm(eraseForm(myForm, parsedSchema.nodes))} variant="contained">
+                            Erase
+                        </Button>
+                        <Button
+                            onClick={() => {
+                                const [form, isValid] = validateForm(myForm, parsedSchema.nodes, {
+                                    REQUIRED: 'This value is required',
+                                    VALUE_IN_ARRAY_REQUIRED: 'Value in array is required',
+                                });
+                                setMyForm(form);
+                                setUserSubmittedInvalidForm(!isValid);
+                                if (isValid) {
+                                    execute(query);
+                                }
+                            }}
+                            variant="contained"
+                        >
                             Submit
                         </Button>
                     </ToTheLeft>

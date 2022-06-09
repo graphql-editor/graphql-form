@@ -7,6 +7,8 @@ export default (props: PassedFormProps) => (
         placeholder={props.f.name.replace(/([A-Z])/g, ' $1').replace(/^./, function (str) {
             return str.toUpperCase();
         })}
+        error={!!props.formObject.errors?.length}
+        helperText={props.formObject.errors?.join(' and ')}
         onChange={(e) => {
             props.onChange({
                 ...props.formObject,

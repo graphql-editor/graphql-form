@@ -13,6 +13,12 @@ export type WidgetSavedData = {
 export type SavedWidgets = {
     [selector: string]: WidgetSavedData | undefined;
 };
+
+export const enum Errs {
+    REQUIRED = 'REQUIRED',
+    VALUE_IN_ARRAY_REQUIRED = 'VALUE_IN_ARRAY_REQUIRED',
+}
+
 export type Errors = {
     [selector: string]: string;
 };
@@ -41,7 +47,6 @@ export type PassedFormProps<WidgetData = ReturnedDictType> = {
     widgetVariants?: WidgetVariantType[];
     currentPath: string;
     widgets?: SavedWidgets;
-    errors?: Errors;
     widgetData?: WidgetData;
     components: {
         ArrayField: FieldComponent;
@@ -107,5 +112,6 @@ export type FormValue =
 
 export type FormObject = {
     value?: FormValue;
+    errors?: string[];
     node: ParserField;
 };
