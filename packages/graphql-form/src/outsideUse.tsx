@@ -38,10 +38,11 @@ export const validateValue = (
     const seekNode = nodes.find((n) => n.name === getTypeName(node.type.fieldType));
     let errs: string[] | undefined;
     if (
-        !seekNode ||
+        (!seekNode && node.data.type !== TypeSystemDefinition.FieldDefinition) ||
         seekNode?.data.type === TypeDefinition.EnumTypeDefinition ||
         seekNode?.data.type === TypeDefinition.ScalarTypeDefinition
     ) {
+        console.log(f);
         if (node.type.fieldType.type === Options.required) {
             if (!value) {
                 errs = [errors[Errs.REQUIRED]];
