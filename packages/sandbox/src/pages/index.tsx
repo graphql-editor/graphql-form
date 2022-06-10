@@ -46,7 +46,8 @@ const execute = async (query: string) => {
 const HomePage = () => {
     const [myForm, setMyForm] = useState(addSource);
     const [query, setQuery] = useState('');
-    const [userSubmittedInvalidForm, setUserSubmittedInvalidForm] = useState(false);
+    const [errs, setErrs] = useState<Record<string, string>>({});
+
     return (
         <>
             <Head>
@@ -59,17 +60,10 @@ const HomePage = () => {
                 <CenterForm>
                     <MuiForm
                         formFile={myForm}
+                        errors={errs}
                         nodes={parsedSchema.nodes}
                         onChange={(e, q) => {
-                            if (userSubmittedInvalidForm) {
-                                const [form] = validateForm(e, parsedSchema.nodes, {
-                                    REQUIRED: 'This value is required',
-                                    VALUE_IN_ARRAY_REQUIRED: 'Value in array is required',
-                                });
-                                setMyForm(form);
-                            } else {
-                                setMyForm(e);
-                            }
+                            setMyForm(e);
                             setQuery(q);
                         }}
                         runQuery={execute}
@@ -81,13 +75,12 @@ const HomePage = () => {
                         </Button>
                         <Button
                             onClick={() => {
-                                const [form, isValid] = validateForm(myForm, parsedSchema.nodes, {
+                                const errDict = validateForm(myForm, parsedSchema.nodes, {
                                     REQUIRED: 'This value is required',
                                     VALUE_IN_ARRAY_REQUIRED: 'Value in array is required',
                                 });
-                                setMyForm(form);
-                                setUserSubmittedInvalidForm(!isValid);
-                                if (isValid) {
+                                setErrs(errDict);
+                                if (!Object.keys(errDict).length) {
                                     execute(query);
                                 }
                             }}

@@ -1,5 +1,12 @@
-import { Errs, FormFile, FormObject, PassedFormProps } from '@/models';
-import { getTypeName, Options, ParserField, TypeDefinition, TypeSystemDefinition } from 'graphql-js-tree';
+import { Errs, FormFile, FormObject, FormValue, PassedFormProps } from '@/models';
+import {
+    getTypeName,
+    Options,
+    ParserField,
+    TypeDefinition,
+    TypeSystemDefinition,
+    ValueDefinition,
+} from 'graphql-js-tree';
 
 export const getWidgetFromProps = (props: PassedFormProps) => {
     const w = props.widgets?.[props.currentPath];
@@ -26,85 +33,82 @@ export const getWidgetFromProps = (props: PassedFormProps) => {
         widget: FoundBasicWidget,
     };
 };
+export const getErrorFromProps = (props: PassedFormProps) => {
+    return props.errors?.[props.currentPath];
+};
 
 export const validateValue = (
-    f: FormObject,
+    f: FormValue,
     nodes: ParserField[],
-    errors: Record<Errs, string>,
-    pushErrors: (isValid: boolean) => void,
-): FormObject => {
-    const { value, node } = f;
-
-    const seekNode = nodes.find((n) => n.name === getTypeName(node.type.fieldType));
-    let errs: string[] | undefined;
+    path: string,
+    pushErrors: (path: string, value: Errs) => void,
+) => {
     if (
-        (!seekNode && node.data.type !== TypeSystemDefinition.FieldDefinition) ||
-        seekNode?.data.type === TypeDefinition.EnumTypeDefinition ||
-        seekNode?.data.type === TypeDefinition.ScalarTypeDefinition
+        f === null ||
+        typeof f === 'string' ||
+        typeof f === 'boolean' ||
+        typeof f === 'number' ||
+        typeof f === 'undefined'
     ) {
-        console.log(f);
-        if (node.type.fieldType.type === Options.required) {
-            if (!value) {
-                errs = [errors[Errs.REQUIRED]];
-            }
-            if (
-                node.type.fieldType.nest.type === Options.array &&
-                node.type.fieldType.nest.nest.type === Options.required
-            ) {
-                if (Array.isArray(value)) {
-                    for (const v of value) {
-                        if (!v) {
-                            errs = [errors[Errs.VALUE_IN_ARRAY_REQUIRED]];
+        return;
+    }
+    if (
+        'node' in f &&
+        typeof f.node === 'object' &&
+        f.node !== null &&
+        'args' in f.node &&
+        'data' in f.node &&
+        typeof f.node.data === 'object' &&
+        !!f.node.data &&
+        'type' in f.node.data &&
+        'directives' in f.node
+    ) {
+        const { node, value } = f as FormObject;
+        if (node.data.type === ValueDefinition.InputValueDefinition) {
+            if (node.type.fieldType.type === Options.required) {
+                if (!value) {
+                    pushErrors(path, Errs.REQUIRED);
+                }
+                if (
+                    node.type.fieldType.nest.type === Options.array &&
+                    node.type.fieldType.nest.nest.type === Options.required
+                ) {
+                    if (Array.isArray(value)) {
+                        for (const v of value) {
+                            if (!v) {
+                                pushErrors(path, Errs.VALUE_IN_ARRAY_REQUIRED);
+                            }
                         }
                     }
                 }
             }
         }
     }
-    pushErrors(!errs?.length);
-    if ((seekNode || node.data.type === TypeSystemDefinition.FieldDefinition) && value) {
-        return {
-            ...f,
-            value: Object.fromEntries(
-                Object.entries(value).map(([k, v]) => [k, validateValue(v as FormObject, nodes, errors, pushErrors)]),
-            ),
-            errors: errs,
-        };
+    if ('value' in f && !!f.value) {
+        const { value } = f;
+        if (Array.isArray(value)) {
+            value.map((vv) => validateValue(vv, nodes, path, pushErrors));
+            return;
+        }
+        if (typeof value === 'object' && !!value) {
+            Object.entries(value).forEach(([k, v]) =>
+                validateValue(v as FormObject, nodes, `${path}.${k}`, pushErrors),
+            );
+            return;
+        }
     }
-    return {
-        ...f,
-        errors: errs,
-    };
+    return;
 };
 
 export const validateForm = (v: FormFile, nodes: ParserField[], errors: Record<Errs, string>) => {
-    let isValid = true;
-    if (!v.forms) return [v, isValid] as const;
-    const forms = Object.entries(v.forms)
-        .map(([k, val]) => {
-            return [
-                k,
-                validateValue(val, nodes, errors, (valid) => {
-                    if (!valid) {
-                        isValid = valid;
-                    }
-                }),
-            ] as const;
-        })
-        .reduce(
-            (a, [k, val]) => ({
-                ...a,
-                [k]: val,
-            }),
-            {} as FormFile['forms'],
-        );
-    return [
-        {
-            ...v,
-            forms,
-        } as FormFile,
-        isValid,
-    ] as const;
+    const errorDict: Record<string, string> = {};
+    if (!v.forms) return errorDict;
+    Object.entries(v.forms).forEach(([k, val]) => {
+        validateValue(val, nodes, k, (p, err) => {
+            errorDict[p] = errors[err];
+        });
+    });
+    return errorDict;
 };
 
 export const eraseValue = (f: FormObject, nodes: ParserField[]): FormObject => {

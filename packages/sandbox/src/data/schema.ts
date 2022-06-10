@@ -159,7 +159,7 @@ type AdminSourceMutation {
     createContract(contract: CreateContract!): String
     createOperation(createOperation: CreateOperation!): String
     deleteContract(_id: String!): Boolean
-    deleteDocument(_id: String!): Boolean
+    deleteDocument(_id: [String!]): Boolean
     deleteOperation(_id: String!): Boolean
     updateContract(_id: String!, contract: EditContract!): Boolean
     updateOperation(_id: String!, updateOperation: UpdateOperation!): Boolean

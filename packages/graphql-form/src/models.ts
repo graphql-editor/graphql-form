@@ -48,6 +48,7 @@ export type PassedFormProps<WidgetData = ReturnedDictType> = {
     currentPath: string;
     widgets?: SavedWidgets;
     widgetData?: WidgetData;
+    errors?: Errors;
     components: {
         ArrayField: FieldComponent;
         ObjectField: FieldComponent;
@@ -99,6 +100,7 @@ export type WidgetType = {
 };
 
 export type FormValue =
+    | { value: FormValue }
     | {
           [x: string]: FormValue;
       }
@@ -112,6 +114,5 @@ export type FormValue =
 
 export type FormObject = {
     value?: FormValue;
-    errors?: string[];
     node: ParserField;
 };

@@ -1,7 +1,7 @@
 import { Layout } from '@/src/layouts';
 import MuiForm from 'graphql-form-mui';
 import { getTypeName, Parser, ScalarTypes, TypeDefinition } from 'graphql-js-tree';
-import sources from '@/src/data/sources';
+import addContract from '@/src/data/addContract';
 import schema from '@/src/data/schema';
 import { useState } from 'react';
 import { createWidget, validateForm, eraseForm, formToGql } from 'graphql-form';
@@ -44,10 +44,9 @@ const execute = async (query: string) => {
 };
 
 const HomePage = () => {
-    const [myForm, setMyForm] = useState(sources);
+    const [myForm, setMyForm] = useState(addContract);
     const [query, setQuery] = useState(formToGql({ fields: myForm.forms!, nodes: parsedSchema.nodes }));
     const [errs, setErrs] = useState<Record<string, string>>({});
-
     return (
         <>
             <Head>
@@ -59,10 +58,11 @@ const HomePage = () => {
             <Layout pageTitle="HomePage">
                 <CenterForm>
                     <MuiForm
-                        errors={errs}
                         formFile={myForm}
                         nodes={parsedSchema.nodes}
+                        errors={errs}
                         onChange={(e, q) => {
+                            console.log(e);
                             setMyForm(e);
                             setQuery(q);
                         }}
@@ -75,14 +75,14 @@ const HomePage = () => {
                         </Button>
                         <Button
                             onClick={() => {
-                                const errDict = validateForm(myForm, parsedSchema.nodes, {
+                                const errorDict = validateForm(myForm, parsedSchema.nodes, {
                                     REQUIRED: 'This value is required',
                                     VALUE_IN_ARRAY_REQUIRED: 'Value in array is required',
                                 });
-                                setErrs(errDict);
-                                if (!Object.keys(errDict).length) {
-                                    execute(query);
-                                }
+                                setErrs(errorDict);
+                                // if (isValid) {
+                                //     execute(query);
+                                // }
                             }}
                             variant="contained"
                         >
