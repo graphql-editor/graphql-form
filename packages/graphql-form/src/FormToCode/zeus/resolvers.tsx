@@ -13,13 +13,13 @@ export const zeusFieldsToReductor = (toggledFields: Record<string, FormObject>):
                 return;
             }
             start[el] = start[el] || {};
-            start[el].node = start[el].node || {};
+            start[el].reductor = start[el].reductor || {};
             if (index === pathElements.length - 1) {
                 if (value.value && Object.keys(value.value).length > 0) {
                     start[el].value = value.value;
                 }
             }
-            start = start[el].node;
+            start = start[el].reductor;
         });
         return a;
     }, {} as Reductor);
@@ -31,9 +31,9 @@ export const zeusReduceQl = (o: Reductor, nodes: ParserField[], tabs = '', level
     return Object.entries(o)
         .map(([k, v]) => {
             if (v.value && Object.keys(v.value).length > 0) {
-                return Object.keys(v.node).length > 0
+                return Object.keys(v.reductor).length > 0
                     ? `${tabs}${k}:[{${resolveQlValue(v.value, nodes, tabs)}\n${tabs}}, {\n${zeusReduceQl(
-                          v.node,
+                          v.reductor,
                           nodes,
                           tabs + '\t',
                           lUP,
@@ -43,11 +43,11 @@ export const zeusReduceQl = (o: Reductor, nodes: ParserField[], tabs = '', level
             if (level === 0) {
                 return `const result = await api("${
                     nodes.find((n) => n.name === k)?.type.operations?.[0]
-                }")({\n${zeusReduceQl(v.node, nodes, tabs + '\t', lUP)}})`;
+                }")({\n${zeusReduceQl(v.reductor, nodes, tabs + '\t', lUP)}})`;
             }
             const kObject =
-                Object.keys(v.node).length > 0
-                    ? `${tabs}${k}:{\n${zeusReduceQl(v.node, nodes, tabs + '\t', lUP)}${tabs}}\n`
+                Object.keys(v.reductor).length > 0
+                    ? `${tabs}${k}:{\n${zeusReduceQl(v.reductor, nodes, tabs + '\t', lUP)}${tabs}}\n`
                     : `${tabs}${k}: true\n`;
             return kObject;
         })

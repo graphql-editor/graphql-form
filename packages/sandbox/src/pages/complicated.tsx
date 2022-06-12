@@ -79,6 +79,7 @@ const HomePage = () => {
                                     REQUIRED: 'This value is required',
                                     VALUE_IN_ARRAY_REQUIRED: 'Value in array is required',
                                 });
+                                console.log(myForm);
                                 setErrs(errorDict);
                                 // if (isValid) {
                                 //     execute(query);

@@ -1,7 +1,7 @@
 import { FormValue } from '@/models';
 
 export type ReductorValue = {
-    node: Reductor;
+    reductor: Reductor;
     value?: FormValue;
 };
 export type Reductor = {

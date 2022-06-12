@@ -1,5 +1,5 @@
 import { resolveQlValue } from '@/FormToCode/gql/resolvers';
-import { Reductor } from '@/FormToCode/models';
+import { Reductor, ReductorValue } from '@/FormToCode/models';
 import { FormObject } from '@/models';
 import { ParserField } from 'graphql-js-tree';
 
@@ -12,27 +12,34 @@ export const fieldsToReductor = (toggledFields: Record<string, FormObject>): Red
                 el = value.node.type.operations[0];
             }
             start[el] = start[el] || {};
-            start[el].node = start[el].node || {};
+            start[el].reductor = start[el].reductor || {};
             if (index === pathElements.length - 1) {
                 if (value.value && Object.keys(value.value).length > 0) {
                     start[el].value = value.value;
                 }
             }
-            start = start[el].node;
+            start = start[el].reductor;
         });
         return a;
     }, {} as Reductor);
 
+export const determineArgumentsQl = (v: ReductorValue, nodes: ParserField[], tabs = '') => {
+    if (v.value && Object.keys(v.value).length > 0) {
+        const resolvedValue = resolveQlValue(v.value, nodes, tabs);
+        if (resolvedValue) {
+            return `(${resolvedValue}\n${tabs})`;
+        }
+    }
+    return '';
+};
+
 export const reduceQl = (o: Reductor, nodes: ParserField[], tabs = ''): string => {
     return Object.entries(o)
         .map(([k, v]) => {
-            const kName =
-                v.value && Object.keys(v.value).length > 0
-                    ? `${k}(${resolveQlValue(v.value, nodes, tabs)}\n${tabs})`
-                    : k;
+            const kName = `${k}${determineArgumentsQl(v, nodes, tabs)}`;
             const kObject =
-                Object.keys(v.node).length > 0
-                    ? `${tabs}${kName}{\n${reduceQl(v.node, nodes, tabs + '\t')}${tabs}}\n`
+                Object.keys(v.reductor).length > 0
+                    ? `${tabs}${kName}{\n${reduceQl(v.reductor, nodes, tabs + '\t')}${tabs}}\n`
                     : `${tabs}${kName}\n`;
             return kObject;
         })
