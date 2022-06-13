@@ -95,7 +95,7 @@ export type WidgetType = {
     Settings: React.FC<CastToWidgetSettingsPassedForm> | undefined;
     Description?: React.FC;
     requirements: (props: PassedFormProps) => boolean;
-    props?: ReturnedDictType;
+    displayName?: string;
     name: string;
 };
 
