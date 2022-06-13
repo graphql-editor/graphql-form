@@ -1,20 +1,8 @@
 import { WidgetProps } from '@/models';
 
-export function createWidget<Props>({
-    name,
-    Component,
-    Settings,
-    Description,
-    requirements,
-    displayName,
-}: WidgetProps<Props>) {
+export function createWidget<Props>(params: WidgetProps<Props>): WidgetProps<Props> & { props: Props } {
     return {
-        displayName,
-        Component,
-        Settings,
-        Description,
-        requirements,
+        ...params,
         props: {} as Props,
-        name,
     };
 }
