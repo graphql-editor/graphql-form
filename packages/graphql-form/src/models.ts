@@ -90,14 +90,16 @@ export type CastToWidgetSettingsPassedForm<WidgetData = ReturnedDictType> = Part
     widgetSettingsChange: (data: WidgetData) => void;
 };
 
-export type WidgetType = {
-    Component: React.FC<PassedFormProps>;
-    Settings: React.FC<CastToWidgetSettingsPassedForm> | undefined;
+export type WidgetProps<Props> = {
+    Component: React.FC<PassedFormProps<Props>>;
+    Settings: React.FC<CastToWidgetSettingsPassedForm<Props>> | undefined;
     Description?: React.FC;
     requirements: (props: PassedFormProps) => boolean;
     displayName?: string;
     name: string;
 };
+
+export type WidgetType = WidgetProps<ReturnedDictType>;
 
 export type FormValue =
     | { value: FormValue }
