@@ -92,7 +92,7 @@ export type CastToWidgetSettingsPassedForm<WidgetData = ReturnedDictType> = Part
 
 export type WidgetProps<Props> = {
     Component: React.FC<PassedFormProps<Props>>;
-    Settings: React.FC<CastToWidgetSettingsPassedForm<Props>> | undefined;
+    Settings?: React.FC<CastToWidgetSettingsPassedForm<Props>> | undefined;
     Description?: React.FC;
     requirements: (props: PassedFormProps) => boolean;
     displayName?: string;
