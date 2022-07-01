@@ -1,6 +1,8 @@
 {
     "name": "graphql-form-workspace",
     "scripts": {
+        "test": "jest",
+        "lint": "eslint \"./packages/**/*.{ts,js}\" --quiet --fix",
         "prepare": "ts-patch install -s",
         "push-next-patch": "npm version patch -ws && git add . && git commit -m 'new release' && git push origin main",
         "run-all": "concurrently \"npm run start -w graphql-form\" \"npm run start -w graphql-form-mui\" \"npm run start -w packages/sandbox\" "
@@ -22,7 +24,7 @@
         "eslint-plugin-prettier": "^3.3.1",
         "eslint-plugin-react": "^7.22.0",
         "graphql-js-tree": "^0.1.1",
-        "jest": "^26.6.3",
+        "jest": "^28.1.2",
         "prettier": "^2.2.1",
         "react": "^17.0.1",
         "react-dom": "^17.0.1",
