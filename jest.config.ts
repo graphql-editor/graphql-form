@@ -7,4 +7,5 @@ module.exports = {
     testMatch: ['**/*.spec.(ts|tsx)'],
     watchPathIgnorePatterns: ['node_modules'],
     watchman: false,
+    moduleDirectories: ['node_modules', 'packages'],
 };

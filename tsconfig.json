@@ -1,5 +1,33 @@
 {
     "files": [],
+    "compilerOptions": {
+        "target": "es6",
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "experimentalDecorators": true,
+        "declaration": true,
+        "removeComments": true,
+        "noUnusedLocals": true,
+        "strictNullChecks": true,
+        "skipLibCheck": true,
+        "strict": true,
+        "sourceMap": true,
+        "lib": ["es6", "es7", "esnext", "dom"],
+        "rootDir": "./packages",
+        "baseUrl": "./packages/",
+        "paths": {
+            "@/*": ["./*"]
+        },
+        "plugins": [
+            {
+                "transform": "typescript-transform-paths"
+            },
+            {
+                "transform": "typescript-transform-paths",
+                "afterDeclarations": true
+            }
+        ]
+    },
     "references": [
         {
             "path": "./packages/graphql-form"
