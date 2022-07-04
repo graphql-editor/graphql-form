@@ -1,7 +1,7 @@
 {
     "name": "graphql-form-workspace",
     "scripts": {
-        "test": "jest",
+        "test": "npm run test -ws --if-present",
         "lint": "eslint \"./packages/**/*.{ts,js}\" --quiet --fix",
         "prepare": "ts-patch install -s",
         "push-next-patch": "npm version patch -ws && git add . && git commit -m 'new release' && git push origin main",
