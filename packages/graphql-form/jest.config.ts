@@ -5,7 +5,7 @@ const config: Config.InitialOptions = {
     preset: 'ts-jest',
     moduleFileExtensions: ['ts', 'tsx', 'js'],
     moduleNameMapper: {
-        '@/(.*)': ['<rootDir>/**/*.ts'],
+        '@/(.*)': ['<rootDir>/src/'],
     },
     testMatch: ['**/*.spec.(ts|tsx)'],
     watchPathIgnorePatterns: ['node_modules'],
