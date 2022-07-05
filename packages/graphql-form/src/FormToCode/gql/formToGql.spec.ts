@@ -1,20 +1,28 @@
-import { Options, ParserField, TypeDefinition } from 'graphql-js-tree';
 import { formToGql } from './index';
-import { FormObject } from '@/models';
+import { extenedFields, fields, nodes, replSpace, singleNode } from '../../__tests__';
 
-it('tranform form to Gql', () => {
-    const node: ParserField = {
-        name: 'Node',
-        args: [],
-        data: { type: TypeDefinition.ObjectTypeDefinition },
-        directives: [],
-        interfaces: [],
-        type: { fieldType: { name: 'type', type: Options.name } },
-    };
-    const nodes: ParserField[] = [node];
-    const fields: Record<string, FormObject> = { test: { node, value: 2 } };
-
-    const result = formToGql({ nodes, fields });
-    console.log(result);
+it('tranform form to Gql, typeNode, No args', () => {
+    // Arrange
+    const expectedValue = 'test';
+    // Act
+    const result = formToGql({ nodes: singleNode, fields });
+    // Assert
+    const matchExact = replSpace(result);
+    matchExact(expectedValue);
 });
+
+it('tranform form to Gql, typeNode, With args', () => {
+    // Arrange
+    const expectedValue = `testInput(
+        test: 5
+    )`;
+
+    // Act
+    const result = formToGql({ nodes, fields: extenedFields });
+
+    // Assert
+    const matchExact = replSpace(result);
+    matchExact(expectedValue);
+});
+
 export {};
