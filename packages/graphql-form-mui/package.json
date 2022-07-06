@@ -4,8 +4,6 @@
     "description": "Easy form creation with GraphQL Editor and React",
     "main": "lib/index.js",
     "scripts": {
-        "test": "jest",
-        "test:watch": "jest --watch",
         "build": "ttsc --build tsconfig.build.json",
         "start": "ttsc --build tsconfig.build.json --watch",
         "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix"
