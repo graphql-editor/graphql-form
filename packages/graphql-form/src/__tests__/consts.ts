@@ -34,3 +34,7 @@ export const nodes: ParserField[] = [typeNode, inputNode, nodeWithArgs];
 
 export const fields: Record<string, FormObject> = { test: { node: typeNode, value: 5 } };
 export const extenedFields: Record<string, FormObject> = { testInput: { node: inputNode, value: fields } };
+export const fieldsNodeWithArgs: Record<string, FormObject> = { testInput: { node: nodeWithArgs, value: fields } };
+export const fieldsNodeWithArgsWithInput: Record<string, FormObject> = {
+    testInput: { node: nodeWithArgs, value: extenedFields },
+};
