@@ -4,11 +4,12 @@
     "description": "Easy form creation with GraphQL Editor and React",
     "main": "lib/index.js",
     "scripts": {
-        "test": "jest",
-        "test:watch": "jest --watch",
+        "test": "jest --maxWorkers=1",
+        "test:watch": "jest --watch --maxWorkes=1",
         "build": "tsc -p tsconfig.build.json",
         "start": "tsc -p tsconfig.build.json --watch",
-        "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix"
+        "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix",
+        "a": "node ./lib/GqlToForm"
     },
     "types": "lib/index.d.ts",
     "private": false,
@@ -22,7 +23,9 @@
     "author": "Aexol <aexol@aexol.com> (http://aexol.com)",
     "license": "MIT",
     "homepage": "https://form.graphqleditor.com",
-    "devDependencies": {},
+    "devDependencies": {
+        "graphql": "^16.5.0"
+    },
     "peerDependencies": {
         "react": ">=16.8.0",
         "react-dom": ">=16.8.0"
