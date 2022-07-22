@@ -9,7 +9,7 @@
         "build": "tsc -p tsconfig.build.json",
         "start": "tsc -p tsconfig.build.json --watch",
         "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix",
-        "a": "node ./lib/GqlToForm"
+        "a": "npm run build && node ./lib/GqlToForm"
     },
     "types": "lib/index.d.ts",
     "private": false,
