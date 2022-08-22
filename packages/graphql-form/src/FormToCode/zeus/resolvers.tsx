@@ -5,7 +5,10 @@ import { ParserField } from 'graphql-js-tree';
 
 export const zeusFieldsToReductor = (toggledFields: Record<string, FormObject>): Reductor => {
     const r = Object.entries(toggledFields).reduce((a, [key, value]) => {
-        const pathElements = key.split('.');
+        const pathElements = key
+            .replace('... on', '___on')
+            .split('.')
+            .map((e) => e.replace('___on', '... on'));
         let start = a;
         pathElements.forEach((el, index) => {
             if (index === 0 && !!value.node.type.operations?.length) {
