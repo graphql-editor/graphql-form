@@ -1,4 +1,4 @@
-import { fieldsToReductor, reduceQl } from '@/FormToCode/gql/reducers';
+import { fieldsToReductor, reduceQl } from './reducers';
 import { FormObject } from '@/models';
 import { ParserField } from 'graphql-js-tree';
 

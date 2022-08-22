@@ -1,4 +1,4 @@
-import { zeusFieldsToReductor, zeusReduceQl } from '@/FormToCode/zeus/resolvers';
+import { zeusFieldsToReductor, zeusReduceQl } from './resolvers';
 import { FormObject } from '@/models';
 import { ParserField } from 'graphql-js-tree';
 

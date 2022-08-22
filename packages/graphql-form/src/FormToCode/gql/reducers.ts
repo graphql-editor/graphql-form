@@ -1,4 +1,4 @@
-import { resolveQlValue } from '@/FormToCode/gql/resolvers';
+import { resolveQlValue } from './resolvers';
 import { Reductor, ReductorValue } from '@/FormToCode/models';
 import { FormObject } from '@/models';
 import { ParserField } from 'graphql-js-tree';
