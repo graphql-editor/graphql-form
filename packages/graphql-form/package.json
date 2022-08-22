@@ -6,8 +6,8 @@
     "scripts": {
         "test": "jest",
         "test:watch": "jest --watch",
-        "build": "tsc -p tsconfig.build.json",
-        "start": "tsc -p tsconfig.build.json --watch",
+        "build": "ttsc -p tsconfig.build.json",
+        "start": "ttsc -p tsconfig.build.json --watch",
         "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix"
     },
     "types": "lib/index.d.ts",

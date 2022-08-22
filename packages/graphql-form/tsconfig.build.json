@@ -32,5 +32,5 @@
             }
         ]
     },
-    "exclude": ["**/__tests__/*", "**/__sandbox__/*", "./lib"]
+    "exclude": ["**/__tests__/*", "**/__sandbox__/*", "./lib", "jest.config.ts"]
 }
