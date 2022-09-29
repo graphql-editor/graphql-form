@@ -65,7 +65,7 @@ input CreateSource {
     parentSource: String
     name: String!
     info: String
-    client: Boolean
+    client: Boolean!
     technologyTags: [String!] = []
 }
 

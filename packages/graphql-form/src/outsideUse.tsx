@@ -3,6 +3,7 @@ import {
     getTypeName,
     Options,
     ParserField,
+    ScalarTypes,
     TypeDefinition,
     TypeSystemDefinition,
     ValueDefinition,
@@ -64,21 +65,19 @@ export const validateValue = (
         'directives' in f.node
     ) {
         const { node, value } = f as FormObject;
+        console.log(`Validating ${node.name}`, node);
         if (node.data.type === ValueDefinition.InputValueDefinition) {
-            if (node.type.fieldType.type === Options.required) {
-                if (!value) {
+            if (
+                node.type.fieldType.type === Options.required &&
+                getTypeName(node.type.fieldType) !== ScalarTypes.Boolean
+            ) {
+                if (typeof value === 'undefined' || value === '') {
                     pushErrors(path, Errs.REQUIRED);
                 }
-                if (
-                    node.type.fieldType.nest.type === Options.array &&
-                    node.type.fieldType.nest.nest.type === Options.required
-                ) {
-                    if (Array.isArray(value)) {
-                        for (const v of value) {
-                            if (!v) {
-                                pushErrors(path, Errs.VALUE_IN_ARRAY_REQUIRED);
-                            }
-                        }
+                if (Array.isArray(value)) {
+                    for (const v of value) {
+                        console.log(v);
+                        validateValue(v, nodes, path, pushErrors);
                     }
                 }
             }

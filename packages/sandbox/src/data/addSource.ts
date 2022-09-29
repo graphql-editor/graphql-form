@@ -156,8 +156,11 @@ const file = {
                                 directives: [],
                                 type: {
                                     fieldType: {
-                                        name: 'Boolean',
-                                        type: 'name',
+                                        type: 'required',
+                                        nest: {
+                                            name: 'Boolean',
+                                            type: 'name',
+                                        },
                                     },
                                 },
                                 data: {

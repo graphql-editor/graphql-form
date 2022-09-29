@@ -1,6 +1,6 @@
 {
     "name": "graphql-form",
-    "version": "0.0.25",
+    "version": "0.0.26",
     "description": "Easy form creation with GraphQL Editor and React",
     "main": "lib/index.js",
     "scripts": {
