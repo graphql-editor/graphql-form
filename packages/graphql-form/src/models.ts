@@ -68,17 +68,19 @@ export type FormFile = {
 
 export type FormBuilderProps = Omit<
     PassedFormProps,
-    'formObject' | 'onChange' | 'f' | 'currentPath' | 'changeWidget' | 'widgets'
+    'formObject' | 'onChange' | 'f' | 'currentPath' | 'changeWidget' | 'widgets' | 'nodes'
 > & {
     formFile: FormFile;
+    schema: string;
     onChange: (o: FormFile, query: string) => void;
 };
 
 export type FormDisplayerProps = Omit<
     PassedFormProps,
-    'formObject' | 'onChange' | 'f' | 'currentPath' | 'changeWidget' | 'widgets'
+    'formObject' | 'onChange' | 'f' | 'currentPath' | 'changeWidget' | 'widgets' | 'nodes'
 > & {
     formFile: FormFile;
+    schema: string;
     onChange: (o: FormFile, query: string) => void;
 };
 

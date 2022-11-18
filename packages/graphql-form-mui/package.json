@@ -1,6 +1,6 @@
 {
     "name": "graphql-form-mui",
-    "version": "0.0.26",
+    "version": "0.0.27",
     "description": "Easy form creation with GraphQL Editor and React",
     "main": "lib/index.js",
     "scripts": {

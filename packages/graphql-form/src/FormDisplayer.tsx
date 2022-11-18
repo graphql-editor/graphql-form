@@ -1,22 +1,26 @@
 import { formToGql } from '@/FormToCode';
 import { FormDisplayerProps, FormObject } from '@/models';
 import { Renderer } from '@/renderer';
-import { TypeSystemDefinition } from 'graphql-js-tree';
-import React from 'react';
+import { Parser, TypeSystemDefinition } from 'graphql-js-tree';
+import React, { useMemo } from 'react';
 
-export const FormDisplayer: React.FC<FormDisplayerProps> = ({ formFile, onChange, ...props }) => {
+export const FormDisplayer: React.FC<FormDisplayerProps> = ({ formFile, onChange, schema, ...props }) => {
     const { widgets = {}, forms = {} } = formFile;
     const formFields = Object.fromEntries(
         Object.entries(forms).filter(
             ([, v]) => !!v.node.args?.length && v.node.data.type === TypeSystemDefinition.FieldDefinition,
         ),
     );
+    const nodes = useMemo(() => {
+        return Parser.parse(schema).nodes;
+    }, [schema]);
     return (
         <>
             {Object.keys(formFields).map((key) => {
                 return (
                     <Renderer
                         {...props}
+                        nodes={nodes}
                         key={key}
                         widgets={widgets}
                         changeWidget={() => {
@@ -32,7 +36,7 @@ export const FormDisplayer: React.FC<FormDisplayerProps> = ({ formFile, onChange
                                     [key]: changedForm,
                                 },
                             };
-                            const query = formToGql({ fields: updatedFile.forms, nodes: props.nodes });
+                            const query = formToGql({ fields: updatedFile.forms, nodes });
                             onChange(updatedFile, query);
                         }}
                         f={formFields[key].node}

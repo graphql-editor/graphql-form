@@ -1,15 +1,13 @@
 import { Layout } from '@/src/layouts';
 import MuiForm from 'graphql-form-mui';
-import { getTypeName, Parser, ScalarTypes, TypeDefinition } from 'graphql-js-tree';
+import { getTypeName, ScalarTypes, TypeDefinition } from 'graphql-js-tree';
 import addSource from '@/src/data/addSource';
 import schema from '@/src/data/schema';
-import { useState } from 'react';
-import { createWidget, validateForm, eraseForm } from 'graphql-form';
+import { useMemo, useState } from 'react';
+import { createWidget, graphqlFormUtils } from 'graphql-form';
 import styled from '@emotion/styled';
 import Head from 'next/head';
 import { Button } from '@mui/material';
-
-const parsedSchema = Parser.parse(schema);
 
 const DateWidget = createWidget<any>({
     name: 'date',
@@ -22,6 +20,7 @@ const DateWidget = createWidget<any>({
         return typeName === ScalarTypes.String || seekNode?.data.type === TypeDefinition.ScalarTypeDefinition;
     },
 });
+
 const url = 'https://faker.graphqleditor.com/aexol-internal/company-manager/graphql';
 
 const execute = async (query: string) => {
@@ -47,6 +46,7 @@ const HomePage = () => {
     const [myForm, setMyForm] = useState(addSource);
     const [query, setQuery] = useState('');
     const [errs, setErrs] = useState<Record<string, string>>({});
+    const { eraseForm, validateForm } = useMemo(() => graphqlFormUtils(schema), [schema]);
 
     return (
         <>
@@ -59,9 +59,9 @@ const HomePage = () => {
             <Layout pageTitle="HomePage">
                 <CenterForm>
                     <MuiForm
+                        schema={schema}
                         formFile={myForm}
                         errors={errs}
-                        nodes={parsedSchema.nodes}
                         onChange={(e, q) => {
                             setMyForm(e);
                             setQuery(q);
@@ -70,12 +70,12 @@ const HomePage = () => {
                         widgetComponents={[DateWidget]}
                     />
                     <ToTheLeft>
-                        <Button onClick={() => setMyForm(eraseForm(myForm, parsedSchema.nodes))} variant="contained">
+                        <Button onClick={() => setMyForm(eraseForm(myForm))} variant="contained">
                             Erase
                         </Button>
                         <Button
                             onClick={() => {
-                                const errDict = validateForm(myForm, parsedSchema.nodes, {
+                                const errDict = validateForm(myForm, {
                                     REQUIRED: 'This value is required',
                                     VALUE_IN_ARRAY_REQUIRED: 'Value in array is required',
                                 });
