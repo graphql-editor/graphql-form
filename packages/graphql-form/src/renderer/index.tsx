@@ -1,3 +1,4 @@
+import { InjectedValue } from '@/BuiltInFields/InjectedValue';
 import { PassedFormProps } from '@/models';
 import { Fields } from '@/renderer/fields';
 import { TypeSystemDefinition, Options, getTypeName, TypeDefinition } from 'graphql-js-tree';
@@ -8,6 +9,7 @@ export const Renderer: React.FC<PassedFormProps> = (props) => {
         formObject,
         f,
         nodes,
+        presetValues: constants,
         components: { NullField, FormLabel, FormField },
     } = props;
     const { children, ...allProps } = props;
@@ -24,6 +26,17 @@ export const Renderer: React.FC<PassedFormProps> = (props) => {
                     type: { ...f.type, fieldType: { ...f.type.fieldType.nest } },
                 }}
                 required={true}
+            />
+        );
+    }
+    const hasOverride = constants?.[props.currentPath];
+    if (hasOverride) {
+        return (
+            <InjectedValue
+                {...props}
+                widgetData={{
+                    value: hasOverride,
+                }}
             />
         );
     }

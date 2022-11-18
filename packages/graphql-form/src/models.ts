@@ -46,6 +46,7 @@ export type PassedFormProps<WidgetData = ReturnedDictType> = {
     widgetComponents: WidgetType[];
     widgetVariants?: WidgetVariantType[];
     currentPath: string;
+    presetValues?: Record<string, any>;
     widgets?: SavedWidgets;
     widgetData?: WidgetData;
     errors?: Errors;

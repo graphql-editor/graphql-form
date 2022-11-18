@@ -60,6 +60,9 @@ const HomePage = () => {
                 <CenterForm>
                     <MuiForm
                         schema={schema}
+                        presetValues={{
+                            ['Mutation.adminMutation.createSource.createSource.parentSource']: '123456',
+                        }}
                         formFile={myForm}
                         errors={errs}
                         onChange={(e, q) => {

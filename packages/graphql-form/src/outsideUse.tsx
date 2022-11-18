@@ -63,7 +63,6 @@ export const graphqlFormUtils = (schema: string) => {
             'directives' in f.node
         ) {
             const { node, value } = f as FormObject;
-            console.log(`Validating ${node.name}`, node);
             if (node.data.type === ValueDefinition.InputValueDefinition) {
                 if (
                     node.type.fieldType.type === Options.required &&
@@ -74,7 +73,6 @@ export const graphqlFormUtils = (schema: string) => {
                     }
                     if (Array.isArray(value)) {
                         for (const v of value) {
-                            console.log(v);
                             validateValue(v, path, pushErrors);
                         }
                     }
