@@ -95,7 +95,10 @@ const ArrayField: React.FC<
 
             <Button
                 onClick={() => {
-                    formValuePointer.push({});
+                    formValuePointer.push({
+                        __form__node: nodeWithoutArray,
+                        __form__value: undefined,
+                    });
                     onChange({
                         ...formObject,
                         __form__value: formValuePointer,

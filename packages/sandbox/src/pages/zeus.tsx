@@ -15,7 +15,7 @@ const HomePage = () => {
     const [errs, setErrs] = useState<Record<string, string>>({});
     const { eraseForm, validateForm } = useMemo(() => graphqlFormUtils(schema), [schema]);
     const [values, setValues] = useState<any>({});
-
+    console.log(values);
     return (
         <>
             <Head>

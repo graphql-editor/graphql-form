@@ -1,7 +1,7 @@
 import { InputFormProps, FormObject, FormValue } from '@/models';
 import { Renderer } from '@/renderer';
 import { resolveQlValue } from '@/resolve';
-import { getTypeName, Parser, ParserField, TypeDefinition, ValueDefinition } from 'graphql-js-tree';
+import { getTypeName, Options, Parser, ParserField, TypeDefinition, ValueDefinition } from 'graphql-js-tree';
 import React, { useMemo } from 'react';
 
 export function InputForm<T>({ onChange, schema, values, inputName, ...props }: InputFormProps<T>) {
@@ -32,9 +32,7 @@ export function InputForm<T>({ onChange, schema, values, inputName, ...props }: 
             key={inputName}
             currentPath={inputName}
             onChange={(changedForm: FormObject) => {
-                console.log(changedForm);
-                const toValue = resolveQlValue(changedForm, nodes);
-                console.log(toValue);
+                const toValue = resolveQlValue({ v: changedForm, nodes });
                 onChange(toValue as Partial<T>);
             }}
             f={formObject.__form__node}
@@ -42,38 +40,46 @@ export function InputForm<T>({ onChange, schema, values, inputName, ...props }: 
     );
 }
 
-function buildForm<T>(props: { node: ParserField; nodes: ParserField[]; values?: any }): FormObject {
+function buildForm<T>(props: {
+    node: ParserField;
+    nodes: ParserField[];
+    values?: any;
+    switchInput?: boolean;
+    switchFieldName?: string;
+}): FormObject {
     const { node, nodes, values } = props;
+    if (
+        node.type.fieldType.type === Options.array ||
+        (node.type.fieldType.type === Options.required && node.type.fieldType.nest.type === Options.array)
+    ) {
+        return {
+            __form__node: node,
+            __form__value: values?.[node.name]?.map((av: any) => ({
+                __form__node: node,
+                __form__value: av,
+            })),
+        };
+    }
     const seekNode = nodes.find((n) => n.name === getTypeName(node.type.fieldType));
     const isFieldOfInputType =
         node.data.type === ValueDefinition.InputValueDefinition &&
         seekNode?.data.type === TypeDefinition.InputObjectTypeDefinition;
 
     if (isFieldOfInputType) {
-        return {
-            __form__node: node,
-            __form__value: seekNode.args.reduce<Record<string, FormObject>>((a, b) => {
-                a[b.name] = {
-                    __form__node: b,
-                    __form__value: buildForm({ ...props, node: b, values: values?.[node.name] || {} }),
-                };
-                return a;
-            }, {}),
-        };
+        return buildForm({ ...props, node: seekNode, switchInput: true, switchFieldName: node.name });
     }
     const isInputType = node.data.type === TypeDefinition.InputObjectTypeDefinition;
     if (isInputType) {
+        const valueObject = node.args.reduce<Record<string, FormValue>>((a, b) => {
+            const fv = buildForm({ ...props, node: b, values: values?.[props.switchFieldName || node.name] || {} });
+            a[b.name] = fv;
+            return a;
+        }, {});
         return {
-            __form__node: node,
-            __form__value: node.args.reduce<Record<string, FormValue>>((a, b) => {
-                a[b.name] = buildForm({ ...props, node: b, values: values?.[node.name] || {} });
-                return a;
-            }, {}),
+            __form__node: props.switchInput ? { ...node, data: { type: ValueDefinition.InputValueDefinition } } : node,
+            __form__value: valueObject,
         };
     }
-    //TODO: Handle arrays
-    // const scalarName = getTypeName(node.type.fieldType);
-    // console.log(scalarName);
     return {
         __form__node: node,
         __form__value: values?.[node.name],
