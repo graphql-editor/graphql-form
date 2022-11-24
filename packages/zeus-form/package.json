@@ -1,0 +1,33 @@
+{
+    "name": "zeus-form",
+    "version": "0.1.0",
+    "description": "Easy form creation with GraphQL Editor and React",
+    "main": "lib/index.js",
+    "scripts": {
+        "test": "jest",
+        "test:watch": "jest --watch",
+        "build": "ttsc -p tsconfig.build.json",
+        "start": "ttsc -p tsconfig.build.json --watch",
+        "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix"
+    },
+    "types": "lib/index.d.ts",
+    "private": false,
+    "publishConfig": {
+        "access": "public"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/graphql-editor/graphql-form.git"
+    },
+    "author": "Aexol <aexol@aexol.com> (http://aexol.com)",
+    "license": "MIT",
+    "homepage": "https://form.graphqleditor.com",
+    "devDependencies": {},
+    "peerDependencies": {
+        "react": ">=16.8.0",
+        "react-dom": ">=16.8.0"
+    },
+    "dependencies": {
+        "graphql-js-tree": "^0.1.1"
+    }
+}

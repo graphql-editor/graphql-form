@@ -5,9 +5,12 @@
         "lint": "eslint \"./packages/**/*.{ts,js}\" --quiet --fix",
         "prepare": "ts-patch install -s",
         "push-next-patch": "npm version patch -ws && git add . && git commit -m 'new release' && git push origin main",
-        "run-all": "concurrently \"npm run start -w graphql-form\" \"npm run start -w graphql-form-mui\" \"npm run start -w packages/sandbox\" "
+        "run-form": "concurrently \"npm run start -w graphql-form\" \"npm run start -w graphql-form-mui\" \"npm run start -w packages/sandbox\" ",
+        "run-zeus-form": "concurrently \"npm run start -w zeus-form\" \"npm run start -w zeus-form-mui\" \"npm run start -w packages/sandbox\" "
     },
     "workspaces": [
+        "./packages/zeus-form",
+        "./packages/zeus-form-mui",
         "./packages/graphql-form",
         "./packages/graphql-form-mui",
         "./packages/sandbox"
