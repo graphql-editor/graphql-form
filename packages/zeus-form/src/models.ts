@@ -58,6 +58,7 @@ export type PassedFormProps<WidgetData = ReturnedDictType> = {
         FormLabel: FormLabelProps;
         FormField: FieldComponent;
     };
+    children?: React.ReactNode;
 };
 export type FormFile = {
     widgets?: SavedWidgets;
