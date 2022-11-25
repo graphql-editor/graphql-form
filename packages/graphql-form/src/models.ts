@@ -50,6 +50,7 @@ export type PassedFormProps<WidgetData = ReturnedDictType> = {
     widgets?: SavedWidgets;
     widgetData?: WidgetData;
     errors?: Errors;
+    children?: React.ReactNode;
     components: {
         ArrayField: FieldComponent;
         ObjectField: FieldComponent;

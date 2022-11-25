@@ -47,6 +47,7 @@ export type PassedFormProps<WidgetData = ReturnedDictType> = {
     widgets?: SavedWidgets;
     widgetData?: WidgetData;
     errors?: Errors;
+    children?: React.ReactNode;
     components: {
         ArrayField: FieldComponent;
         ObjectField: FieldComponent;
@@ -58,7 +59,6 @@ export type PassedFormProps<WidgetData = ReturnedDictType> = {
         FormLabel: FormLabelProps;
         FormField: FieldComponent;
     };
-    children?: React.ReactNode;
 };
 export type FormFile = {
     widgets?: SavedWidgets;
