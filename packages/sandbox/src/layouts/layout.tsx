@@ -5,6 +5,6 @@ interface LayoutProps {
     pageTitle?: string;
 }
 
-export const Layout: React.FC<LayoutProps> = ({ children, home, pageTitle }) => {
+export const Layout: React.FC<LayoutProps & { children?: React.ReactNode }> = ({ children, home, pageTitle }) => {
     return <div>{children}</div>;
 };

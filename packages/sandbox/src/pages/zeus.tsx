@@ -7,15 +7,13 @@ import { graphqlFormUtils } from 'graphql-form';
 import styled from '@emotion/styled';
 import Head from 'next/head';
 import { Button } from '@mui/material';
-
-const url = 'https://faker.graphqleditor.com/aexol-internal/company-manager/graphql';
+import { ModelTypes } from '@/src/data/zeustypes';
 
 const HomePage = () => {
     const [myForm, setMyForm] = useState(addSource);
-    const [errs, setErrs] = useState<Record<string, string>>({});
+    const [errs, setErrs] = useState<Record<string, string>>();
     const { eraseForm, validateForm } = useMemo(() => graphqlFormUtils(schema), [schema]);
     const [values, setValues] = useState<any>({});
-    console.log(values);
     return (
         <>
             <Head>
@@ -26,12 +24,18 @@ const HomePage = () => {
             </Head>
             <Layout pageTitle="HomePage">
                 <CenterForm>
-                    <InputMuiForm<any>
+                    <InputMuiForm<ModelTypes['CreateSource']>
                         schema={schema}
+                        override={{ parentSource: '123' }}
+                        basicErrorMessages={{
+                            REQUIRED: 'This field is required',
+                            VALUE_IN_ARRAY_REQUIRED: 'Array in value is required',
+                        }}
                         inputName="CreateSource"
                         errors={errs}
-                        onChange={(e) => {
+                        onChange={(e, errors) => {
                             setValues(e);
+                            setErrs(errors);
                         }}
                         values={values}
                         widgetComponents={[]}
@@ -40,7 +44,12 @@ const HomePage = () => {
                         <Button onClick={() => setMyForm(eraseForm(myForm))} variant="contained">
                             Erase
                         </Button>
-                        <Button onClick={() => {}} variant="contained">
+                        <Button
+                            onClick={() => {
+                                console.log(values, errs);
+                            }}
+                            variant="contained"
+                        >
                             Submit
                         </Button>
                     </ToTheLeft>

@@ -1,10 +1,20 @@
+import { mergeDeep } from '@/deepMerge';
 import { InputFormProps, FormObject, FormValue } from '@/models';
+import { validateForm } from '@/outsideUse';
 import { Renderer } from '@/renderer';
 import { resolveQlValue } from '@/resolve';
 import { getTypeName, Options, Parser, ParserField, TypeDefinition, ValueDefinition } from 'graphql-js-tree';
 import React, { useMemo } from 'react';
 
-export function InputForm<T>({ onChange, schema, values, inputName, ...props }: InputFormProps<T>) {
+export function InputForm<T>({
+    onChange,
+    schema,
+    values,
+    inputName,
+    basicErrorMessages,
+    override,
+    ...props
+}: InputFormProps<T>) {
     const nodes = useMemo(() => {
         return Parser.parse(schema).nodes;
     }, [schema]);
@@ -23,27 +33,32 @@ export function InputForm<T>({ onChange, schema, values, inputName, ...props }: 
             values: v,
         });
     }, [inputName, values]);
-
     return (
         <Renderer
             {...props}
             nodes={nodes}
             formObject={formObject}
             key={inputName}
+            override={override}
             currentPath={inputName}
             onChange={(changedForm: FormObject) => {
-                const toValue = resolveQlValue({ v: changedForm, nodes });
-                onChange(toValue as Partial<T>);
+                const toValue = resolveQlValue({ v: changedForm, nodes }) as Partial<T>;
+                const validation = validateForm(basicErrorMessages)(changedForm);
+                onChange(override ? mergeDeep(toValue, override) : toValue, validation);
             }}
             f={formObject.__form__node}
         />
     );
 }
 
-function buildForm<T>(props: {
+function buildForm<
+    T extends {
+        [x: string]: any;
+    },
+>(props: {
     node: ParserField;
     nodes: ParserField[];
-    values?: any;
+    values?: T;
     switchInput?: boolean;
     switchFieldName?: string;
 }): FormObject {

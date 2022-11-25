@@ -8,6 +8,8 @@ export const Renderer: React.FC<PassedFormProps> = (props) => {
         formObject,
         f,
         nodes,
+        override,
+        currentPath,
         components: { NullField, FormLabel, FormField },
     } = props;
     const { children, ...allProps } = props;
@@ -25,6 +27,16 @@ export const Renderer: React.FC<PassedFormProps> = (props) => {
                 required={true}
             />
         );
+    }
+    if (override) {
+        const p = currentPath.split('.').slice(1);
+        if (p.length > 0) {
+            const overrides = p.reduce((a, b) => {
+                if (!a) return;
+                return a[b];
+            }, override);
+            if (overrides) return null;
+        }
     }
     return (
         <FormField {...allProps}>

@@ -2,7 +2,6 @@ import { TextField } from '@mui/material';
 import { PassedFormProps } from 'zeus-form';
 import React from 'react';
 export default (props: PassedFormProps) => {
-    console.log(props.f.name, props.formObject);
     return (
         <TextField
             value={(props.formObject.__form__value as string | undefined) || ''}

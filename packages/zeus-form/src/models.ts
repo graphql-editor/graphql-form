@@ -42,12 +42,12 @@ export type PassedFormProps<WidgetData = ReturnedDictType> = {
     onChange: (formObject: FormObject) => void;
     required?: boolean;
     widgetComponents: WidgetType[];
-    widgetVariants?: WidgetVariantType[];
     currentPath: string;
     widgets?: SavedWidgets;
     widgetData?: WidgetData;
     errors?: Errors;
     children?: React.ReactNode;
+    override?: { [x: string]: any };
     components: {
         ArrayField: FieldComponent;
         ObjectField: FieldComponent;
@@ -71,8 +71,10 @@ export type InputFormProps<InputZeusType> = Omit<
 > & {
     schema: string;
     inputName: string;
+    override?: Partial<InputZeusType>;
+    basicErrorMessages: Record<Errs, string>;
     values: Partial<InputZeusType>;
-    onChange: (o: Partial<InputZeusType>) => void;
+    onChange: (o: Partial<InputZeusType>, errors?: Record<string, string>) => void;
 };
 export type InputFormLibraryProps<T> = Omit<InputFormProps<T>, 'required' | 'components'>;
 
