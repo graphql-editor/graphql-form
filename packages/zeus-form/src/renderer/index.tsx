@@ -5,12 +5,11 @@ import React, { useState } from 'react';
 
 export const Renderer: React.FC<PassedFormProps> = (props) => {
     const {
-        formObject,
         f,
         nodes,
         override,
         currentPath,
-        components: { NullField, FormLabel, FormField },
+        components: { FormLabel, FormField },
     } = props;
     const { children, ...allProps } = props;
     const seekNode = nodes.find((n) => n.name === getTypeName(f.type.fieldType));
@@ -41,11 +40,7 @@ export const Renderer: React.FC<PassedFormProps> = (props) => {
     return (
         <FormField {...allProps}>
             <FormLabel {...allProps} open={open} setOpen={setOpen} children={children} />
-            {formObject.__form__value === null ? (
-                <NullField {...allProps} />
-            ) : (
-                <>{(!isInput || open) && <Fields {...allProps} />}</>
-            )}
+            {(!isInput || open) && <Fields {...allProps} />}
         </FormField>
     );
 };

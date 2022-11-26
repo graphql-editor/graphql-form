@@ -1,6 +1,6 @@
 {
     "name": "sandbox",
-    "version": "0.1.3",
+    "version": "0.1.4",
     "private": true,
     "scripts": {
         "export": "next build && next export",

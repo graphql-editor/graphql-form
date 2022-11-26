@@ -55,7 +55,6 @@ export type PassedFormProps<WidgetData = ReturnedDictType> = {
         UniversalField: FieldComponent;
         NumberField: FieldComponent;
         EnumField: FieldComponent;
-        NullField: FieldComponent;
         FormLabel: FormLabelProps;
         FormField: FieldComponent;
     };
@@ -67,7 +66,16 @@ export type FormFile = {
 
 export type InputFormProps<InputZeusType> = Omit<
     PassedFormProps,
-    'formObject' | 'onChange' | 'f' | 'currentPath' | 'changeWidget' | 'widgets' | 'nodes' | 'formFile' | 'runQuery'
+    | 'formObject'
+    | 'onChange'
+    | 'f'
+    | 'currentPath'
+    | 'changeWidget'
+    | 'widgets'
+    | 'nodes'
+    | 'formFile'
+    | 'runQuery'
+    | 'override'
 > & {
     schema: string;
     inputName: string;
