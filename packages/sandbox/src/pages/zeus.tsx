@@ -32,13 +32,21 @@ const HomePage = () => {
                             VALUE_IN_ARRAY_REQUIRED: 'Array in value is required',
                         }}
                         inputName="CreateSource"
+                        widgets={{
+                            technologyTags: { widget: 'ddd' },
+                        }}
                         errors={errs}
                         onChange={(e, errors) => {
                             setValues(e);
                             setErrs(errors);
                         }}
                         values={values}
-                        widgetComponents={[]}
+                        widgetComponents={[
+                            {
+                                name: 'ddd',
+                                Component: () => <div>Hello</div>,
+                            },
+                        ]}
                     />
                     <ToTheLeft>
                         <Button onClick={() => setMyForm(eraseForm(myForm))} variant="contained">

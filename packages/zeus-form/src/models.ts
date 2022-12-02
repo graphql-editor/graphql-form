@@ -66,22 +66,16 @@ export type FormFile = {
 
 export type InputFormProps<InputZeusType> = Omit<
     PassedFormProps,
-    | 'formObject'
-    | 'onChange'
-    | 'f'
-    | 'currentPath'
-    | 'changeWidget'
-    | 'widgets'
-    | 'nodes'
-    | 'formFile'
-    | 'runQuery'
-    | 'override'
+    'formObject' | 'onChange' | 'f' | 'currentPath' | 'nodes' | 'override' | 'widgets'
 > & {
     schema: string;
     inputName: string;
     override?: Partial<InputZeusType>;
     basicErrorMessages: Record<Errs, string>;
     values: Partial<InputZeusType>;
+    widgets?: {
+        [P in keyof Partial<InputZeusType>]: WidgetSavedData;
+    };
     onChange: (o: Partial<InputZeusType>, errors?: Record<string, string>) => void;
 };
 export type InputFormLibraryProps<T> = Omit<InputFormProps<T>, 'required' | 'components'>;

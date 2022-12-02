@@ -9,6 +9,14 @@ export const Fields: React.FC<PassedFormProps> = (props) => {
         f,
         components: { ArrayField, ObjectField },
     } = props;
+    const w = getWidgetFromProps(props);
+    if (w) {
+        const {
+            data,
+            widget: { Component },
+        } = w;
+        return <Component {...props} widgetData={data} />;
+    }
     const seekNode = nodes.find((n) => n.name === getTypeName(f.type.fieldType));
     const isInput = f.data.type === TypeDefinition.InputObjectTypeDefinition;
     if (isInput) {
@@ -20,14 +28,6 @@ export const Fields: React.FC<PassedFormProps> = (props) => {
     }
     if (isFieldInput) {
         return <ObjectField {...props} f={seekNode} />;
-    }
-    const w = getWidgetFromProps(props);
-    if (w) {
-        const {
-            data,
-            widget: { Component },
-        } = w;
-        return <Component {...props} widgetData={data} />;
     }
     return <ScalarField {...props} />;
 };

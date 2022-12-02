@@ -1,16 +1,28 @@
-import { Errs, FormObject, FormValue, PassedFormProps } from '@/models';
+import { Errs, FormObject, FormValue, PassedFormProps, WidgetSavedData } from '@/models';
 import { getTypeName, Options, ScalarTypes, ValueDefinition } from 'graphql-js-tree';
 
 export const getWidgetFromProps = (props: PassedFormProps) => {
-    const w = props.widgets?.[props.currentPath];
-    const FoundBasicWidget = props.widgetComponents.find((wc) => wc.name === w?.widget);
-    if (!FoundBasicWidget) {
-        return;
+    const { widgets } = props;
+    if (!widgets) return;
+    const p = props.currentPath.split('.').slice(1);
+    if (p.length > 0) {
+        let w: WidgetSavedData | undefined;
+        for (const pathPart of p) {
+            if (widgets[pathPart]) {
+                w = widgets[pathPart];
+                break;
+            }
+        }
+        const FoundBasicWidget = props.widgetComponents.find((wc) => wc.name === w?.widget);
+        if (!FoundBasicWidget) {
+            return;
+        }
+        return {
+            data: w as WidgetSavedData,
+            widget: FoundBasicWidget,
+        };
     }
-    return {
-        data: w,
-        widget: FoundBasicWidget,
-    };
+    return;
 };
 export const getErrorFromProps = (props: PassedFormProps) => {
     return props.errors?.[props.currentPath];
