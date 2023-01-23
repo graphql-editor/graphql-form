@@ -1,6 +1,6 @@
 {
     "name": "zeus-form",
-    "version": "0.1.5",
+    "version": "0.1.6",
     "description": "Easy form creation with GraphQL Editor and React",
     "main": "lib/index.js",
     "scripts": {
@@ -22,12 +22,11 @@
     "author": "Aexol <aexol@aexol.com> (http://aexol.com)",
     "license": "MIT",
     "homepage": "https://form.graphqleditor.com",
-    "devDependencies": {},
     "peerDependencies": {
         "react": ">=18",
         "react-dom": ">=18"
     },
     "dependencies": {
-        "graphql-js-tree": "^0.1.1"
+        "graphql-js-tree": "^0.2.5"
     }
 }
