@@ -1,6 +1,6 @@
 {
     "name": "graphql-form-mui",
-    "version": "0.1.6",
+    "version": "0.1.7",
     "description": "Easy form creation with GraphQL Editor and React",
     "main": "lib/index.js",
     "scripts": {
@@ -22,8 +22,8 @@
     "homepage": "https://form.graphqleditor.com",
     "peerDependencies": {
         "graphql-form": "*",
-        "react": ">=18",
-        "react-dom": ">=18"
+        "react": ">=16.8.0",
+        "react-dom": ">=16.8.0"
     },
     "dependencies": {
         "@emotion/react": "^11.9.0",
