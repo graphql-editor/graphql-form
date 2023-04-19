@@ -31,7 +31,10 @@ import { Button } from '@mui/material';
 const HomePage = () => {
     const [myForm, setMyForm] = useState<VarFormFile>({
         values: {},
-        vars: [{ name: 'createObject', type: 'CreateSource' }],
+        vars: [
+            { name: 'createObject', type: 'CreateSource' },
+            { name: 'myVar', type: 'String!' },
+        ],
     });
     console.log(myForm);
     return (

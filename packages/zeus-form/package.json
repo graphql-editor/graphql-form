@@ -1,6 +1,6 @@
 {
     "name": "zeus-form",
-    "version": "0.1.7",
+    "version": "0.1.8",
     "description": "Easy form creation with GraphQL Editor and React",
     "main": "lib/index.js",
     "scripts": {

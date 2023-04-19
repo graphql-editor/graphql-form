@@ -1,6 +1,6 @@
 import { NewFieldProps, VarFormProps } from '@/models';
 import { Fields } from '@/render/fields';
-import { Parser } from 'graphql-js-tree';
+import { Parser, ScalarTypes, generateNodeId, decompileType } from 'graphql-js-tree';
 import React from 'react';
 
 export const Render: React.FC<NewFieldProps> = (props) => {
@@ -29,8 +29,19 @@ export const VariableForm: React.FC<VarFormProps> = (props) => {
         <>
             {vars.map((v) => {
                 const value = values[v.name];
-                const node = nodes.find((n) => n.name === v.type);
-                if (!node) throw new Error(`Invalid form node "${v.type}" does not exist`);
+                const node = nodes.find((n) => n.name === v.type) || {
+                    name: v.name,
+                    args: [],
+                    data: {
+                        type: v.type as ScalarTypes,
+                    },
+                    directives: [],
+                    id: generateNodeId(v.name, v.type as ScalarTypes, []),
+                    interfaces: [],
+                    type: {
+                        fieldType: decompileType(v.type),
+                    },
+                };
                 return (
                     <Render
                         node={node}
