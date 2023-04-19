@@ -1,58 +1,47 @@
 import { Button, IconButton, Stack } from '@mui/material';
-import { FormObject, FormValue, PassedFormProps, Renderer } from 'graphql-form';
+import { NewFieldProps, VariableValue, Render } from 'graphql-form';
 import { Options, ParserField } from 'graphql-js-tree';
 import React from 'react';
 import { Add, ArrowDownward, ArrowUpward, Close } from '@mui/icons-material';
 
-const ArrayField: React.FC<
-    PassedFormProps & {
-        open?: boolean;
-    }
-> = (props) => {
-    const { formObject, onChange, f } = props;
-    formObject.value ||= [];
-    if (f.type.fieldType.type !== Options.array) {
-        throw new Error('Invalid Array node');
+const ArrayField: React.FC<NewFieldProps> = (props) => {
+    const { mutate, node, shared, value } = props;
+    const v: Array<VariableValue> = (value as Array<VariableValue>) || [];
+    if (node.type.fieldType.type !== Options.array) {
+        throw new Error(`Invalid node ${node.name}`);
     }
     const nodeWithoutArray: ParserField = {
-        ...f,
+        ...node,
         type: {
-            ...f.type,
+            ...node.type,
             fieldType: {
-                ...f.type.fieldType.nest,
+                ...node.type.fieldType.nest,
             },
         },
     };
-    const formValuePointer = formObject.value as Array<FormValue>;
+    const formValuePointer = v as Array<VariableValue>;
     return (
         <Stack>
             {formValuePointer.map((v, i: number, all) => {
-                formValuePointer[i] ||= { node: nodeWithoutArray };
                 return (
-                    <Stack key={f.name + i}>
-                        <Renderer
+                    <Stack key={node.name + i}>
+                        <Render
                             key={i}
-                            {...props}
-                            f={{
+                            node={{
                                 ...nodeWithoutArray,
                                 name: `${nodeWithoutArray.name}[${i}]`,
                             }}
-                            onChange={(e) => {
+                            mutate={(e) => {
                                 formValuePointer[i] = e;
-                                onChange({
-                                    ...formObject,
-                                    value: formValuePointer,
-                                });
+                                mutate(formValuePointer);
                             }}
-                            formObject={v as FormObject}
+                            value={v}
+                            shared={shared}
                         >
                             <Stack direction="row">
                                 <IconButton
                                     onClick={() => {
-                                        onChange({
-                                            ...formObject,
-                                            value: formValuePointer.filter((_, index) => i !== index),
-                                        });
+                                        mutate(formValuePointer.filter((_, index) => i !== index));
                                     }}
                                 >
                                     <Close />
@@ -63,10 +52,7 @@ const ArrayField: React.FC<
                                             const switched = v;
                                             formValuePointer[i] = formValuePointer[i - 1];
                                             formValuePointer[i - 1] = switched;
-                                            onChange({
-                                                ...formObject,
-                                                value: formValuePointer,
-                                            });
+                                            mutate(formValuePointer);
                                         }}
                                     >
                                         <ArrowUpward />
@@ -78,32 +64,26 @@ const ArrayField: React.FC<
                                             const switched = v;
                                             formValuePointer[i] = formValuePointer[i + 1];
                                             formValuePointer[i + 1] = switched;
-                                            onChange({
-                                                ...formObject,
-                                                value: formValuePointer,
-                                            });
+                                            mutate(formValuePointer);
                                         }}
                                     >
                                         <ArrowDownward />
                                     </IconButton>
                                 )}
                             </Stack>
-                        </Renderer>
+                        </Render>
                     </Stack>
                 );
             })}
 
             <Button
                 onClick={() => {
-                    formValuePointer.push({});
-                    onChange({
-                        ...formObject,
-                        value: formValuePointer,
-                    });
+                    formValuePointer.push(null);
+                    mutate(formValuePointer);
                 }}
                 endIcon={<Add />}
             >
-                {`Add ${f.name}`}
+                {`Add ${node.name}`}
             </Button>
         </Stack>
     );

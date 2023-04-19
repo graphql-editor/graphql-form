@@ -1,23 +1,12 @@
+import { NewFieldProps } from 'graphql-form';
 import { Checkbox, FormControlLabel, FormGroup } from '@mui/material';
-import { PassedFormProps } from 'graphql-form';
 import React from 'react';
-export default ({ f, formObject, onChange }: PassedFormProps) => {
-    const value = formObject.value as boolean | undefined;
+export default ({ mutate, node, value }: NewFieldProps) => {
     return (
         <FormGroup>
             <FormControlLabel
-                control={
-                    <Checkbox
-                        value={value}
-                        onChange={() =>
-                            onChange({
-                                ...formObject,
-                                value: value === true ? undefined : true,
-                            })
-                        }
-                    />
-                }
-                label={f.name}
+                control={<Checkbox value={!!value} onChange={() => mutate(!value)} />}
+                label={node.name}
             />
         </FormGroup>
     );

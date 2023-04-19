@@ -7,23 +7,25 @@ import NullField from '@/components/NullField';
 import NumberField from '@/components/NumberField';
 import ObjectField from '@/components/ObjectField';
 import UniversalField from '@/components/UniversalField';
-import { FormDisplayer, FormLibraryProps } from 'graphql-form';
+import { VarFormProps, VariableForm } from 'graphql-form';
 import React from 'react';
 
-const MuiForm: React.FC<FormLibraryProps> = (props) => {
+const MuiForm: React.FC<Omit<VarFormProps, 'shared'>> = (props) => {
     return (
-        <FormDisplayer
+        <VariableForm
             {...props}
-            components={{
-                ArrayField: ArrayField,
-                BooleanField: BooleanField,
-                EnumField: EnumField,
-                FormField: FormField,
-                FormLabel: FormLabel,
-                NullField: NullField,
-                NumberField: NumberField,
-                ObjectField: ObjectField,
-                UniversalField: UniversalField,
+            shared={{
+                components: {
+                    ArrayField: ArrayField,
+                    BooleanField: BooleanField,
+                    EnumField: EnumField,
+                    FormField: FormField,
+                    FormLabel: FormLabel,
+                    NullField: NullField,
+                    NumberField: NumberField,
+                    ObjectField: ObjectField,
+                    UniversalField: UniversalField,
+                },
             }}
         />
     );

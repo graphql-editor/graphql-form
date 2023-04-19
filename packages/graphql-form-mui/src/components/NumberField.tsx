@@ -1,15 +1,12 @@
 import { TextField } from '@mui/material';
-import { PassedFormProps } from 'graphql-form';
+import { NewFieldProps } from 'graphql-form';
 import React from 'react';
-export default (props: PassedFormProps) => (
+export default ({ value, mutate }: NewFieldProps) => (
     <TextField
         type="number"
-        value={(props.formObject.value as string | undefined) || ''}
+        value={(value as string | undefined) || ''}
         onChange={(e) => {
-            props.onChange({
-                ...props.formObject,
-                value: e.target.value,
-            });
+            mutate(e.target.value);
         }}
     />
 );

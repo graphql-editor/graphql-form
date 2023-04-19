@@ -1,18 +1,6 @@
 import { ParserField } from 'graphql-js-tree';
+import { VariableDefinitionWithoutLoc } from 'graphql-js-tree/lib/Models/GqlParserTree';
 import React from 'react';
-
-export type FieldComponent = React.FC<PassedFormProps>;
-
-export type FormLabelProps = React.FC<PassedFormProps & { open?: boolean; setOpen: (b: boolean) => void }>;
-
-export type WidgetSavedData = {
-    widget: string;
-    [x: string]: unknown;
-};
-
-export type SavedWidgets = {
-    [selector: string]: WidgetSavedData | undefined;
-};
 
 export const enum Errs {
     REQUIRED = 'REQUIRED',
@@ -23,102 +11,57 @@ export type Errors = {
     [selector: string]: string;
 };
 
-export type SavedForms = {
-    [selector: string]: FormObject;
-};
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type ReturnedDictType = any;
+// New implementation
 
-export type WidgetVariantType = {
-    name: string;
-    widget: string;
-    data: ReturnedDictType;
-};
-
-export type PassedFormProps<WidgetData = ReturnedDictType> = {
-    f: ParserField;
-    nodes: ParserField[];
-    formObject: FormObject;
-    onChange: (formObject: FormObject) => void;
-    changeWidget: (widgetData: WidgetSavedData | undefined, path: string) => void;
-    required?: boolean;
-    runQuery: (q: string) => Promise<ReturnedDictType>;
-    widgetComponents: WidgetType[];
-    widgetVariants?: WidgetVariantType[];
-    currentPath: string;
-    presetValues?: Record<string, any>;
-    widgets?: SavedWidgets;
-    widgetData?: WidgetData;
-    errors?: Errors;
-    children?: React.ReactNode;
-    components: {
-        ArrayField: FieldComponent;
-        ObjectField: FieldComponent;
-        BooleanField: FieldComponent;
-        UniversalField: FieldComponent;
-        NumberField: FieldComponent;
-        EnumField: FieldComponent;
-        NullField: FieldComponent;
-        FormLabel: FormLabelProps;
-        FormField: FieldComponent;
-    };
-};
-export type FormFile = {
-    widgets?: SavedWidgets;
-    forms?: SavedForms;
-};
-
-export type FormBuilderProps = Omit<
-    PassedFormProps,
-    'formObject' | 'onChange' | 'f' | 'currentPath' | 'changeWidget' | 'widgets' | 'nodes'
-> & {
-    formFile: FormFile;
-    schema: string;
-    onChange: (o: FormFile, query: string) => void;
-};
-
-export type FormDisplayerProps = Omit<
-    PassedFormProps,
-    'formObject' | 'onChange' | 'f' | 'currentPath' | 'changeWidget' | 'widgets' | 'nodes'
-> & {
-    formFile: FormFile;
-    schema: string;
-    onChange: (o: FormFile, query: string) => void;
-};
-
-export type FormLibraryProps = Omit<FormDisplayerProps, 'required' | 'components'>;
-
-export type CastToWidgetSettingsPassedForm<WidgetData = ReturnedDictType> = Partial<
-    PassedFormProps<Partial<WidgetData>>
-> & {
-    widgetSettingsChange: (data: WidgetData) => void;
-};
-
-export type WidgetProps<Props> = {
-    Component: React.FC<PassedFormProps<Props>>;
-    Settings?: React.FC<CastToWidgetSettingsPassedForm<Props>> | undefined;
-    Description?: React.FC;
-    requirements: (props: PassedFormProps) => boolean;
-    displayName?: string;
-    name: string;
-};
-
-export type WidgetType = WidgetProps<ReturnedDictType>;
-
-export type FormValue =
-    | { value: FormValue }
+export type VariableValue =
     | {
-          [x: string]: FormValue;
+          [x: string]: VariableValue;
       }
     | string
     | boolean
     | number
     | null
     | undefined
-    | FormObject
-    | Array<FormValue>;
+    | Array<VariableValue>;
 
-export type FormObject = {
-    value?: FormValue;
-    node: ParserField;
+export type VarValues = {
+    [variableName: string]: VariableValue;
 };
+export type VarFormFile = {
+    values: VarValues;
+    vars: VariableDefinitionWithoutLoc[];
+};
+
+export type VarFormProps = {
+    file: VarFormFile;
+    onChange: (file: VarFormFile) => void;
+    schema: string;
+    shared: Omit<SharedProps, 'nodes'>;
+};
+
+type SharedProps = {
+    nodes: ParserField[];
+    components: {
+        ArrayField: NewFieldComponent;
+        ObjectField: NewFieldComponent;
+        BooleanField: NewFieldComponent;
+        UniversalField: NewFieldComponent;
+        NumberField: NewFieldComponent;
+        EnumField: NewFieldComponent;
+        NullField: NewFieldComponent;
+        FormLabel: NewFormLabelProps;
+        FormField: NewFieldComponent;
+    };
+};
+
+export type NewFieldProps = {
+    node: ParserField;
+    value: VariableValue;
+    shared: SharedProps;
+    mutate: (value: VariableValue) => void;
+    children?: React.ReactNode;
+    required?: boolean;
+};
+export type NewFieldComponent = React.FC<NewFieldProps>;
+
+export type NewFormLabelProps = React.FC<NewFieldProps>;

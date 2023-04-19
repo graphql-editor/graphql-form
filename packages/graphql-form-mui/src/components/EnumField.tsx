@@ -1,9 +1,9 @@
 import { MenuItem, Select } from '@mui/material';
-import { PassedFormProps } from 'graphql-form';
+import { NewFieldProps } from 'graphql-form';
 import { getTypeName } from 'graphql-js-tree';
 import React from 'react';
-export default ({ nodes, onChange, formObject, f }: PassedFormProps) => {
-    const seekNode = nodes.find((n) => n.name === getTypeName(f.type.fieldType));
+export default ({ node, value, mutate, shared: { nodes } }: NewFieldProps) => {
+    const seekNode = nodes.find((n) => n.name === getTypeName(node.type.fieldType));
     if (!seekNode) {
         throw new Error('Invalid enum field');
     }
@@ -14,13 +14,10 @@ export default ({ nodes, onChange, formObject, f }: PassedFormProps) => {
         })) || [];
     return (
         <Select
-            placeholder={f.name}
-            value={formObject.value as string | undefined}
+            placeholder={node.name}
+            value={value as string | undefined}
             onChange={(e) => {
-                onChange({
-                    ...formObject,
-                    value: e.target.value,
-                });
+                mutate(e.target.value);
             }}
         >
             {options.map((o) => (

@@ -1,53 +1,39 @@
 import { Layout } from '@/src/layouts';
 import MuiForm from 'graphql-form-mui';
-import { getTypeName, ScalarTypes, TypeDefinition } from 'graphql-js-tree';
-import addSource from '@/src/data/addSource';
 import schema from '@/src/data/schema';
-import { useMemo, useState } from 'react';
-import { createWidget, graphqlFormUtils } from 'graphql-form';
+import { useState } from 'react';
+import { VarFormFile } from 'graphql-form';
 import styled from '@emotion/styled';
 import Head from 'next/head';
 import { Button } from '@mui/material';
 
-const DateWidget = createWidget<any>({
-    name: 'date',
-    Component: () => {
-        return <input type="date" />;
-    },
-    requirements: ({ f, nodes }) => {
-        const typeName = getTypeName(f.type.fieldType);
-        const seekNode = nodes.find((n) => n.name === typeName);
-        return typeName === ScalarTypes.String || seekNode?.data.type === TypeDefinition.ScalarTypeDefinition;
-    },
-});
+// const url = 'https://faker.graphqleditor.com/aexol-internal/company-manager/graphql';
 
-const url = 'https://faker.graphqleditor.com/aexol-internal/company-manager/graphql';
-
-const execute = async (query: string) => {
-    const computedHeaders = Object.assign(
-        {},
-        {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-        },
-        // ...(schemaHeaders?.map((v) => ({ [v[0]]: v[1] })) || []),
-    );
-    const response = await fetch(url, {
-        method: 'POST',
-        body: JSON.stringify({ query }),
-        headers: computedHeaders,
-    })
-        .then((r) => r.json())
-        .then((r) => r.data);
-    return response;
-};
+// const execute = async (query: string) => {
+//     const computedHeaders = Object.assign(
+//         {},
+//         {
+//             Accept: 'application/json',
+//             'Content-Type': 'application/json',
+//         },
+//         // ...(schemaHeaders?.map((v) => ({ [v[0]]: v[1] })) || []),
+//     );
+//     const response = await fetch(url, {
+//         method: 'POST',
+//         body: JSON.stringify({ query }),
+//         headers: computedHeaders,
+//     })
+//         .then((r) => r.json())
+//         .then((r) => r.data);
+//     return response;
+// };
 
 const HomePage = () => {
-    const [myForm, setMyForm] = useState(addSource);
-    const [query, setQuery] = useState('');
-    const [errs, setErrs] = useState<Record<string, string>>({});
-    const { eraseForm, validateForm } = useMemo(() => graphqlFormUtils(schema), [schema]);
-
+    const [myForm, setMyForm] = useState<VarFormFile>({
+        values: {},
+        vars: [{ name: 'createObject', type: 'CreateSource' }],
+    });
+    console.log(myForm);
     return (
         <>
             <Head>
@@ -57,53 +43,56 @@ const HomePage = () => {
                 />
             </Head>
             <Layout pageTitle="HomePage">
-                <CenterForm>
-                    <MuiForm
-                        schema={schema}
-                        presetValues={{
-                            ['Mutation.adminMutation.createSource.createSource.parentSource']: '123456',
-                        }}
-                        formFile={myForm}
-                        errors={errs}
-                        onChange={(e, q) => {
-                            setMyForm(e);
-                            setQuery(q);
-                        }}
-                        runQuery={execute}
-                        widgetComponents={[DateWidget]}
-                    />
-                    <ToTheLeft>
-                        <Button onClick={() => setMyForm(eraseForm(myForm))} variant="contained">
-                            Erase
-                        </Button>
-                        <Button
-                            onClick={() => {
-                                const errDict = validateForm(myForm, {
-                                    REQUIRED: 'This value is required',
-                                    VALUE_IN_ARRAY_REQUIRED: 'Value in array is required',
-                                });
-                                setErrs(errDict);
-                                if (!Object.keys(errDict).length) {
-                                    execute(query);
-                                }
+                <Stack>
+                    <Column>
+                        <MuiForm
+                            schema={schema}
+                            file={myForm}
+                            onChange={(e) => {
+                                setMyForm(e);
                             }}
-                            variant="contained"
-                        >
-                            Submit
-                        </Button>
-                    </ToTheLeft>
-                </CenterForm>
+                        />
+                        <ToTheLeft>
+                            <Button
+                                onClick={() =>
+                                    setMyForm({
+                                        values: {},
+                                        vars: myForm.vars,
+                                    })
+                                }
+                                variant="contained"
+                            >
+                                Erase
+                            </Button>
+                            <Button
+                                onClick={() => {
+                                    console.log('Submit');
+                                }}
+                                variant="contained"
+                            >
+                                Submit
+                            </Button>
+                        </ToTheLeft>
+                    </Column>
+                    <Column>
+                        <code>
+                            <pre>{'elo'}</pre>
+                        </code>
+                    </Column>
+                </Stack>
             </Layout>
         </>
     );
 };
 
 export default HomePage;
-const CenterForm = styled.div`
-    max-width: 480px;
+const Stack = styled.div`
+    max-width: 1280px;
+    width: 100%;
     margin: auto;
-    margin-bottom: 100px;
+    display: flex;
 `;
+const Column = styled.div``;
 const ToTheLeft = styled.div`
     display: flex;
     justify-content: flex-end;
