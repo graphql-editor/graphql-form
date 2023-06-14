@@ -21,6 +21,9 @@ export const Fields: React.FC<NewFieldProps> = (props) => {
     if (node.type.fieldType.type === Options.array) {
         return <ArrayField {...props} />;
     }
+    if(node.type.fieldType.type === Options.required){
+        return <Fields {...props} required />
+    }
     if (isInput) {
         return <ObjectField {...props} node={seekNode} />;
     }
