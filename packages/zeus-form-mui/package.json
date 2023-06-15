@@ -1,6 +1,6 @@
 {
     "name": "zeus-form-mui",
-    "version": "0.1.8",
+    "version": "0.1.9",
     "description": "Easy form creation with GraphQL Editor and React",
     "main": "lib/index.js",
     "scripts": {
@@ -21,7 +21,7 @@
     "license": "MIT",
     "homepage": "https://form.graphqleditor.com",
     "peerDependencies": {
-        "graphql-form": "*",
+        "graphql-form": "^0.1.9",
         "react": ">=16.8.0",
         "react-dom": ">=16.8.0"
     },
