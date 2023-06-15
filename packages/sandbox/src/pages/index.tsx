@@ -34,6 +34,7 @@ const HomePage = () => {
         vars: [
             { name: 'createObject', type: 'CreateSource' },
             { name: 'myVar', type: 'String!' },
+            { name: 'Clients', type: '[EditClientData!]!' },
         ],
     });
     console.log(myForm);
