@@ -1,6 +1,6 @@
 {
     "name": "sandbox",
-    "version": "0.1.8",
+    "version": "0.1.9",
     "private": true,
     "scripts": {
         "export": "next build && next export",
@@ -13,8 +13,8 @@
         "@mui/material": "^5.8.0",
         "dotenv-cli": "^5.0.0",
         "framer-motion": "^6.2.8",
-        "graphql-form": "*",
-        "graphql-form-mui": "*",
+        "graphql-form": "^0.1.9",
+        "graphql-form-mui": "^0.1.9",
         "graphql-js-tree": "^0.1.1",
         "gray-matter": "^4.0.3",
         "highlight.js": "^11.5.0",

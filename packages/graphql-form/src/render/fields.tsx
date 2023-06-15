@@ -1,5 +1,5 @@
 import { NewFieldProps } from '@/models';
-import { getTypeName, Options, ScalarTypes, TypeDefinition, TypeSystemDefinition } from 'graphql-js-tree';
+import { getTypeName, Options, ParserField, ScalarTypes, TypeDefinition, TypeSystemDefinition } from 'graphql-js-tree';
 import React from 'react';
 
 export const Fields: React.FC<NewFieldProps> = (props) => {
@@ -21,8 +21,17 @@ export const Fields: React.FC<NewFieldProps> = (props) => {
     if (node.type.fieldType.type === Options.array) {
         return <ArrayField {...props} />;
     }
-    if(node.type.fieldType.type === Options.required){
-        return <Fields {...props} required />
+    if (node.type.fieldType.type === Options.required) {
+        const nodeWithoutRequired: ParserField = {
+            ...node,
+            type: {
+                ...node.type,
+                fieldType: {
+                    ...node.type.fieldType.nest,
+                },
+            },
+        };
+        return <Fields {...props} required={true} node={nodeWithoutRequired} />;
     }
     if (isInput) {
         return <ObjectField {...props} node={seekNode} />;

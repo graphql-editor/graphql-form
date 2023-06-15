@@ -1,18 +1,20 @@
 import { NewFieldProps, VarFormProps } from '@/models';
 import { Fields } from '@/render/fields';
-import { Parser, ScalarTypes, generateNodeId, decompileType } from 'graphql-js-tree';
+import { Parser, ScalarTypes, generateNodeId, decompileType, Options } from 'graphql-js-tree';
 import React from 'react';
 
 export const Render: React.FC<NewFieldProps> = (props) => {
     const {
+        node,
         shared: {
             components: { FormLabel, FormField },
         },
     } = props;
+
     return (
-        <FormField {...props}>
-            <FormLabel {...props} />
-            <Fields {...props} />
+        <FormField {...props} required={node.type.fieldType.type === Options.required}>
+            <FormLabel {...props} required={node.type.fieldType.type === Options.required} />
+            <Fields {...props} required={node.type.fieldType.type === Options.required} />
         </FormField>
     );
 };
