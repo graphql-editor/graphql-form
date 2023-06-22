@@ -33,8 +33,11 @@ const HomePage = () => {
         values: {},
         vars: [
             { name: 'createObject', type: 'CreateSource' },
-            { name: 'myVar', type: 'String!' },
             { name: 'Clients', type: '[EditClientData!]!' },
+            { name: 'RequiredMyVar', type: 'String!' },
+            { name: 'myVar', type: 'String' },
+            { name: 'RequiredAgreementEnum', type: 'AgreementPL!' },
+            { name: 'AgreementEnum', type: 'AgreementPL' },
         ],
     });
     console.log(myForm);
@@ -54,6 +57,7 @@ const HomePage = () => {
                             file={myForm}
                             onChange={(e) => {
                                 setMyForm(e);
+                                console.log({ formFile: e });
                             }}
                         />
                         <ToTheLeft>
