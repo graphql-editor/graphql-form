@@ -1,6 +1,6 @@
 import { NewFieldProps, VarFormProps } from '@/models';
 import { Fields } from '@/render/fields';
-import { Parser, ScalarTypes, generateNodeId, decompileType, Options } from 'graphql-js-tree';
+import { Parser, ScalarTypes, generateNodeId, decompileType, Options, TypeDefinition } from 'graphql-js-tree';
 import React from 'react';
 
 export const Render: React.FC<NewFieldProps> = (props) => {
@@ -31,7 +31,9 @@ export const VariableForm: React.FC<VarFormProps> = (props) => {
         <>
             {vars.map((v) => {
                 const value = values[v.name];
-                const node = nodes.find((n) => n.name === v.type) || {
+                const node = nodes.find(
+                    (n) => n.name === v.type && n.data.type !== TypeDefinition.EnumTypeDefinition,
+                ) || {
                     name: v.name,
                     args: [],
                     data: {

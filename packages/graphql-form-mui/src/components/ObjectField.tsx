@@ -5,7 +5,7 @@ import React from 'react';
 const ObjectField: React.FC<NewFieldProps> = (props) => {
     const { value, mutate, node } = props;
     const v: Record<string, VariableValue> = (value as Record<string, VariableValue>) || {};
-    console.log(node);
+
     return (
         <Stack pl={2} spacing={2}>
             {node.args
