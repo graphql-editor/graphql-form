@@ -1,6 +1,6 @@
 {
     "name": "graphql-form-mui",
-    "version": "0.4.2",
+    "version": "0.4.3",
     "description": "Easy form creation with GraphQL Editor and React",
     "main": "lib/index.js",
     "scripts": {
@@ -21,7 +21,7 @@
     "license": "MIT",
     "homepage": "https://form.graphqleditor.com",
     "peerDependencies": {
-        "graphql-form": "^0.4.2",
+        "graphql-form": "^0.4.3",
         "react": ">=16.8.0",
         "react-dom": ">=16.8.0"
     },
@@ -30,6 +30,6 @@
         "@emotion/styled": "^11.8.1",
         "@mui/icons-material": "^5.8.0",
         "@mui/material": "^5.8.0",
-        "graphql-js-tree": "^1.0.3"
+        "graphql-js-tree": "^1.0.4"
     }
 }
