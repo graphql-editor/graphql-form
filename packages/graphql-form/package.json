@@ -1,6 +1,6 @@
 {
     "name": "graphql-form",
-    "version": "0.4.1",
+    "version": "0.4.2",
     "description": "Easy form creation with GraphQL Editor and React",
     "main": "lib/index.js",
     "scripts": {
@@ -27,6 +27,6 @@
         "react-dom": ">=16.8.0"
     },
     "dependencies": {
-        "graphql-js-tree": "^1.0.2"
+        "graphql-js-tree": "^1.0.3"
     }
 }

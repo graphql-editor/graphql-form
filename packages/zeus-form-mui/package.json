@@ -1,6 +1,6 @@
 {
     "name": "zeus-form-mui",
-    "version": "0.4.1",
+    "version": "0.4.2",
     "description": "Easy form creation with GraphQL Editor and React",
     "main": "lib/index.js",
     "scripts": {
@@ -23,13 +23,13 @@
     "peerDependencies": {
         "react": ">=16.8.0",
         "react-dom": ">=16.8.0",
-        "zeus-form": "^0.4.1"
+        "zeus-form": "^0.4.2"
     },
     "dependencies": {
         "@emotion/react": "^11.9.0",
         "@emotion/styled": "^11.8.1",
         "@mui/icons-material": "^5.8.0",
         "@mui/material": "^5.8.0",
-        "graphql-js-tree": "^1.0.2"
+        "graphql-js-tree": "^1.0.3"
     }
 }
